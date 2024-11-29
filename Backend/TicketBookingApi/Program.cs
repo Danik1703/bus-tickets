@@ -1,6 +1,6 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем сервисы в контейнер
+
 builder.Services.AddOpenApi();
 builder.Services.AddCors(options =>
 {
@@ -15,7 +15,7 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Конфигурация HTTP pipeline
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi(); 

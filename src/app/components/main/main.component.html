@@ -1,2 +1,141 @@
-<h1>Вітаємо у нашому сервісі квитків!</h1>
-<p>Це головна сторінка. Виберіть потрібний розділ у меню.</p>
+
+<header>
+  <div class="logo-container">
+      <img src="assets/photo/logo.png" alt="Логотип" class="logo">
+  </div>
+  <div class="center-text">
+    <h1>Bus Tickets</h1>
+  </div>
+  <div class="cart-container">
+    <a href="#" class="cart-link" (click)="openModal()">
+      <img src="assets/photo/cart.png" alt="Корзина" class="cart-icon">
+    </a>
+  </div>
+</header>
+
+<div id="booking-overlay" class="booking-overlay">
+      <div class="booking-container">
+        <h2>Бронювання квитків</h2>
+        <form id="booking-form">
+          <label for="route">Маршрут:</label>
+          <input type="text" id="route" name="route" required>
+          <label for="passenger-name">ПІБ пасажира:</label>
+          <input type="text" id="passenger-name" name="passenger-name" required>
+          <label for="email">Електронна пошта:</label>
+          <input type="email" id="email" name="email" required>
+          <label for="phone">Номер телефону:</label>
+          <input type="tel" id="phone" name="phone" pattern="(?:\+38)?0\d{2}-\d{3}-\d{2}-\d{2}" required>
+          <label for="card-number">Номер картки:</label>
+          <input type="text" id="card-number" name="card-number" pattern="\d{4} \d{4} \d{4} \d{4}" required>
+          <label for="payment-method">Метод оплати:</label>
+          <select id="payment-method" name="payment-method" required>
+            <option value="credit-card">Кредитна карта</option>
+            <option value="paypal">PayPal</option>
+          </select>
+          <button type="submit">Забронювати</button>
+        </form>
+        <div id="booking-status" class="booking-status"></div>
+        <span id="close-button">×</span>
+      </div>
+
+  </div>
+  <div id="cart-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <div id="cart-items" class="cart"></div>
+      <div id="payment-form">
+        <input type="text" placeholder="Имя" id="name-input">
+        <input type="text" placeholder="Адрес" id="address-input">
+        <input type="text" placeholder="Номер карты" id="card-number-input">
+        <input type="text" placeholder="СVV код" id="cvv-input">
+        <button type="submit" (click)="processPayment()">Оплатить</button>
+      </div>
+    </div>
+  </div>
+  
+  
+
+  
+  <div id="booking-overlay"></div>
+  
+    <h2>Популярные маршрути</h2>
+    <div class="destination-grid">
+      <div class="top-row">
+        <div class="destination-container">
+          <img src="assets/photo/kiev.jpg" alt="Київ - Лондон">
+          <div class="destination-info">
+            <span class="destination-name">Київ - Лондон</span>
+            <span class="destination-price">Цена: $700</span>
+            <button class="buy-ticket" data-route="Київ - Лондон" onclick="addToCart(this)">Купить билет</button>
+          </div>
+        </div>
+        <div class="destination-container">
+          <img src="assets/photo/london.jpg" alt="Лондон - Київ">
+          <div class="destination-info">
+            <span class="destination-name">Лондон - Київ</span>
+            <span class="destination-price">Цена: $450</span>
+            <button class="buy-ticket" data-route="Лондон - Київ" onclick="addToCart(this)">Купить билет</button>
+          </div>
+        </div>
+        <div class="destination-container">
+          <img src="assets/photo/paris.jpg" alt="Париж">
+          <div class="destination-info">
+            <span class="destination-name">Париж</span>
+            <span class="destination-price">Цена: $500</span>
+            <button class="buy-ticket" data-route="Париж" onclick="addToCart(this)">Купить билет</button>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-row">
+        <div class="destination-container">
+          <img src="assets/photo/madrid.jpg" alt="Мадрид">
+          <div class="destination-info">
+            <span class="destination-name">Мадрид</span>
+            <span class="destination-price">Цена: $600</span>
+            <button class="buy-ticket" data-route="Мадрид" onclick="addToCart(this)">Купить билет</button>
+          </div>
+        </div>
+        <div class="destination-container">
+          <img src="assets/photo/warsawa.jpg" alt="Варшава">
+          <div class="destination-info">
+            <span class="destination-name">Варшава</span>
+            <span class="destination-price">Цена: $200</span>
+            <button class="buy-ticket" data-route="Варшава" onclick="addToCart(this)">Купить билет</button>
+          </div>
+        </div>
+        <div class="destination-container">
+          <img src="assets/photo/berlin.jpg" alt="Берлін - Варшава">
+          <div class="destination-info">
+            <span class="destination-name">Берлін - Варшава</span>
+            <span class="destination-price">Ціна: $150</span>
+            <button class="buy-ticket" data-route="Берлін - Варшава" onclick="addToCart(this)">Купить билет</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+ 
+
+
+    <footer>
+      <div class="footer-container">
+        <div class="footer-links">
+          <h3>Ссылки</h3>
+        </div>
+        <div class="footer-contact">
+          <h3>Контакты</h3>
+          <p>Телефон: +1 800 123 456</p>
+          <p>Email: buscompany&#64;gmail.com</p>
+        </div>
+        <div class="footer-social">
+          <h3>Следите за нами</h3>
+          <a href="https://www.instagram.com/" target="_blank"><img src="assets/photo/instagram.png" alt="Instagram" class="social-icon"></a>
+          <a href="https://www.facebook.com/" target="_blank"><img src="assets/photo/facebook.png" alt="Facebook" class="social-icon"></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
+      </div>
+    </footer>
+    

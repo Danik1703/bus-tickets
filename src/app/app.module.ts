@@ -1,24 +1,22 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module'; 
-
+import { FormsModule } from '@angular/forms'; 
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
-import { SearchComponent } from './components/search/search.component';
-import { ResultsComponent } from './components/results/results.component';
-import { DetailsComponent } from './components/details/details.component';
+import { HttpClientModule } from '@angular/common/http';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
-    SearchComponent,
-    ResultsComponent,
-    DetailsComponent, 
   ],
   imports: [
     BrowserModule,
     AppRoutingModule, 
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],

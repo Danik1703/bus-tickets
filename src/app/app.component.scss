@@ -1,23 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #f4f4f4;
+}
+
 nav {
-    display: flex;
-    justify-content: center;
-    background-color: #2c3e50;
-    padding: 10px;
-  
-    a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-size: 1.2rem;
-      transition: color 0.3s ease;
-  
-      &:hover {
-        color: #1abc9c;
-      }
-    }
-  }
-  
-  app-root {
-    margin-top: 20px;
-  }
-  
+  display: flex;
+  justify-content: center;
+  background-color: whitesmoke;
+  padding: 10px;
+}
+
+
+app-root {
+  margin-top: 20px;
+}
+
+

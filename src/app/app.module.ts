@@ -5,12 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { MainComponent } from './components/main/main.component';
 import { HttpClientModule } from '@angular/common/http';
-
+import { BusServiceComponent } from './bus-service/bus-service.component';
+import { BusService } from './services/bus.service'; 
 
 @NgModule({
   declarations: [
     AppComponent,
     MainComponent,
+    BusServiceComponent
   ],
   imports: [
     BrowserModule,
@@ -18,7 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [BusService], 
   bootstrap: [AppComponent],
 })
 export class AppModule {}

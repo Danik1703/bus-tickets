@@ -80,11 +80,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\karto\\OneDrive\\Робочий стіл\\bus-tickets\\Backend\\TicketBookingApi\\TicketBookingApi.csproj",
+      "projectUniqueName": "C:\\Users\\karto\\OneDrive\\Робочий стіл\\bus-tickets\\bus-tickets\\Backend\\TicketBookingApi\\TicketBookingApi.csproj",
       "projectName": "TicketBookingApi",
-      "projectPath": "C:\\Users\\karto\\OneDrive\\Робочий стіл\\bus-tickets\\Backend\\TicketBookingApi\\TicketBookingApi.csproj",
+      "projectPath": "C:\\Users\\karto\\OneDrive\\Робочий стіл\\bus-tickets\\bus-tickets\\Backend\\TicketBookingApi\\TicketBookingApi.csproj",
       "packagesPath": "C:\\Users\\karto\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\karto\\OneDrive\\Робочий стіл\\bus-tickets\\Backend\\TicketBookingApi\\obj\\",
+      "outputPath": "C:\\Users\\karto\\OneDrive\\Робочий стіл\\bus-tickets\\bus-tickets\\Backend\\TicketBookingApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\karto\\AppData\\Roaming\\NuGet\\NuGet.Config"

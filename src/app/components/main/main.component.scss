@@ -5,32 +5,52 @@ body {
   box-sizing: border-box;
   background-color: #f4f4f4;
 }
+
 header {
   display: flex;
-  justify-content: space-between; 
-  align-items: center; 
-  width: 100%;
-  padding: 10px 20px; 
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
   background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
+.nav-links {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover, .active-link {
+  color: black;
+}
+
 .center-text {
   flex-grow: 1;
   text-align: center;
-
-  h1 {
-    font-size: 1.5rem;
-    margin: 0;
-    color: #333;
-  }
 }
+
+.center-text h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: #333;
+}
+
 .logo-container {
   display: flex;
   align-items: center;
 }
 
 .logo {
-  width: 120px; 
+  width: 120px;
   height: auto;
 }
 
@@ -41,14 +61,15 @@ header {
 }
 
 .cart-icon {
-  width: 40px; 
+  width: 35px;
   height: auto;
-  transition: transform 0.3s ease; 
+  transition: transform 0.3s ease;
 }
 
 .cart-icon:hover {
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
+
 .destination-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -80,15 +101,13 @@ header {
   font-size: 1.2rem;
   font-weight: bold;
   color: #333;
-  margin-right: 5px;
 }
 
 .destination-price {
   font-size: 1rem;
-  color: #666;
-  margin-top: 5px;
-  font-weight: bold; 
-  margin-bottom: 5px;
+  color: black;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 .buy-ticket {
@@ -104,73 +123,6 @@ header {
 }
 
 .buy-ticket:hover {
-  background-color: #999;
-}
-
-.booking-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.booking-container {
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  width: 80%;
-  max-width: 500px;
-}
-
-#close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 1.5rem;
-  color: #999;
-  cursor: pointer;
-}
-
-#close-button:hover {
-  color: #333;
-}
-
-#booking-form label {
-  display: block;
-  margin-top: 10px;
-  font-size: 1rem;
-}
-
-#booking-form input,
-#booking-form select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-#booking-form button {
-  background-color: #bbb;
-  color: white;
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  width: 100%;
-  margin-top: 20px;
-}
-
-#booking-form button:hover {
   background-color: #999;
 }
 
@@ -194,7 +146,88 @@ header {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   position: relative;
   width: 80%;
-  max-width: 500px;
+  max-width: 600px;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+.cart-items {
+  max-height: 60vh;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.cart-item-image {
+  width: 200px;
+  height: 200px;
+  margin-right: 15px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item-info {
+  flex-grow: 1;
+}
+
+.remove-btn {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.remove-btn:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.total {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+.payment-btn {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.payment-btn:hover {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 128, 0, 0.5);
+  color: rgba(0, 0, 0, 0.6);
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  z-index: 1000;
+  animation: fadeOut 3s forwards;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .close {
@@ -232,78 +265,81 @@ header {
 #payment-form button:hover {
   background-color: #999;
 }
+
 footer {
   background-color: #333;
   color: white;
   padding: 30px 0;
   text-align: center;
+}
 
-  .footer-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 20px 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-  .footer-logo-img {
-    width: 120px;
-    height: auto;
-  }
+.footer-logo-img {
+  width: 120px;
+  height: auto;
+}
 
-  .footer-links,
-  .footer-contact,
-  .footer-social {
-    flex: 1;
-    margin-left: 20px;
+.footer-links,
+.footer-contact,
+.footer-social {
+  flex: 1;
+  margin-left: 20px;
+}
 
-    h3 {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      color: #fff;
-    }
+.footer-links h3,
+.footer-contact h3,
+.footer-social h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  color: #fff;
+}
 
-    ul {
-      list-style-type: none;
-      padding: 0;
+ul {
+  list-style-type: none;
+  padding: 0;
+}
 
-      li {
-        margin-bottom: 8px;
+ul li {
+  margin-bottom: 8px;
+}
 
-        a {
-          color: #bbb;
-          text-decoration: none;
-          transition: color 0.3s;
+ul li a {
+  color: #bbb;
+  text-decoration: none;
+  transition: color 0.3s;
+}
 
-          &:hover {
-            color: #1abc9c;
-          }
-        }
-      }
-    }
+ul li a:hover {
+  color: #1abc9c;
+}
 
-    p {
-      color: #bbb;
-      margin: 8px 0;
-    }
+p {
+  color: #bbb;
+  margin: 8px 0;
+}
 
-    .social-icon {
-      width: 30px;
-      height: auto;
-      margin-right: 15px;
-      transition: transform 0.3s ease;
+.social-icon {
+  width: 30px;
+  height: auto;
+  margin-right: 15px;
+  transition: transform 0.3s ease;
+}
 
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
-  }
+.social-icon:hover {
+  transform: scale(1.1);
+}
 
-  .footer-bottom {
-    background-color: #222;
-    color: #aaa;
-    padding: 15px;
-    margin-top: 20px;
-  }
+.footer-bottom {
+  background-color: #222;
+  color: #aaa;
+  padding: 15px;
+  margin-top: 20px;
 }

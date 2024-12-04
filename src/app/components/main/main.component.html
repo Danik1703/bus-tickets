@@ -43,106 +43,119 @@
     </div>
   </div>
 </div>
-
-
-<div *ngIf="successMessage" class="success-message">
-  {{ successMessage }}
-</div>
-
-  <section>
-    <h2>Популярные маршруты</h2>
-    <div class="destination-grid">
- 
-      <div class="destination-container">
-        <img src="assets/photo/kiev.jpg" alt="Київ - Лондон">
-        <div class="destination-info">
-          <span class="destination-name">Київ - Лондон</span><br>
-          <span class="destination-price">Цена: $700</span>
-          <button class="buy-ticket" (click)="addToCart('Київ - Лондон', '$700', 'assets/photo/kiev.jpg')">
-            Купить билет
-          </button>
-        </div>
+<section class="company-info">
+  <div class="container">
+    <h1>Путешествуйте легко и комфортно</h1>
+    <p class="intro">
+      Добро пожаловать в нашу компанию, где каждый маршрут начинается с заботы о вас. 
+      Мы предлагаем широкий выбор автобусных маршрутов, охватывающих города и страны, 
+      обеспечивая комфорт, безопасность и удобство в каждом путешествии.
+    </p>
+    <div class="info-cards">
+      <div class="card">
+        <h3>Современные автобусы</h3>
+        <p>Комфортные кресла, Wi-Fi и всё, что нужно для приятного путешествия.</p>
       </div>
-
-  
-      <div class="destination-container">
-        <img src="assets/photo/london.jpg" alt="Лондон - Київ">
-        <div class="destination-info">
-          <span class="destination-name">Лондон - Київ</span><br>
-          <span class="destination-price">Цена: $450</span>
-          <button class="buy-ticket" (click)="addToCart('Лондон - Київ', '$450', 'assets/photo/london.jpg')">
-            Купить билет
-          </button>
-        </div>
+      <div class="card">
+        <h3>Доступные цены</h3>
+        <p>Регулярные скидки и акции для всех наших клиентов.</p>
       </div>
-
-
-      <div class="destination-container">
-        <img src="assets/photo/paris.jpg" alt="Париж">
-        <div class="destination-info">
-          <span class="destination-name">Париж</span><br>
-          <span class="destination-price">Цена: $500</span>
-          <button class="buy-ticket" (click)="addToCart('Париж', '$500', 'assets/photo/paris.jpg')">
-            Купить билет
-          </button>
-        </div>
+      <div class="card">
+        <h3>Круглосуточная поддержка</h3>
+        <p>Наша команда всегда готова помочь в любой ситуации.</p>
       </div>
-
-
-      <div class="destination-container">
-        <img src="assets/photo/madrid.jpg" alt="Мадрид">
-        <div class="destination-info">
-          <span class="destination-name">Мадрид</span><br>
-          <span class="destination-price">Цена: $600</span>
-          <button class="buy-ticket" (click)="addToCart('Мадрид', '$600', 'assets/photo/madrid.jpg')">
-            Купить билет
-          </button>
-        </div>
-      </div>
-
-    
-      <div class="destination-container">
-        <img src="assets/photo/warsawa.jpg" alt="Варшава">
-        <div class="destination-info">
-          <span class="destination-name">Варшава</span><br>
-          <span class="destination-price">Цена: $200</span>
-          <button class="buy-ticket" (click)="addToCart('Варшава', '$200', 'assets/photo/warsawa.jpg')">
-            Купить билет
-          </button>
-        </div>
-      </div>
-
-   
-      <div class="destination-container">
-        <img src="assets/photo/berlin.jpg" alt="Берлин - Варшава">
-        <div class="destination-info">
-          <span class="destination-name">Берлин - Варшава</span><br>
-          <span class="destination-price">Ціна: $150</span>
-          <button class="buy-ticket" (click)="addToCart('Берлин - Варшава', '$150', 'assets/photo/berlin.jpg')">
-            Купить билет
-          </button>
-        </div>
+      <div class="card">
+        <h3>Гибкие условия</h3>
+        <p>Простая система возврата и обмена билетов.</p>
       </div>
     </div>
-  </section>
+    <p class="cta">
+      Присоединяйтесь к тысячам довольных путешественников и начните своё путешествие уже сегодня!
+    </p>
+  </div>
+</section>
 
 
-  <footer>
-    <div class="footer-container">
-      <div class="footer-contact">
-        <h3>Контакты</h3>
-        <p>Телефон: +1 800 123 456</p>
-        <p>Email: buscompany&#64;gmail.com</p>
+
+
+
+<section class="banner">
+  <div class="slider">
+    <div class="slide" *ngFor="let image of images; let i = index" [class.active]="currentSlideIndex === i">
+      <img [src]="image" [alt]="'Slide ' + (i + 1)" />
+    </div>
+    <div class="navigation">
+      <span 
+        class="dot" 
+        *ngFor="let _, let i = index of images" 
+        [class.active]="currentSlideIndex === i"
+        (click)="setCurrentSlide(i)">
+      </span>
+    </div>
+  </div>
+</section>
+
+<section class="additional-info">
+  <div class="container">
+    <h2>Почему выбирают нас?</h2>
+    <p>
+      Наша компания — это ваш надежный партнер в мире автобусных путешествий. 
+      Мы заботимся о том, чтобы каждая поездка была не только удобной, но и запоминающейся. 
+      Вот что мы предлагаем:
+    </p>
+    <div class="info-cards">
+      <div class="card">
+        <h3>Удобные маршруты</h3>
+        <p>
+          Более 500 направлений по всему миру! Мы постоянно расширяем нашу маршрутную сеть, чтобы вы могли добраться туда, куда хотите.
+        </p>
       </div>
-      <div class="footer-social">
-        <h3>Следите за нами</h3>
-        <a href="https://www.instagram.com/" target="_blank"><img src="assets/photo/instagram.png" alt="Instagram" class="social-icon"></a>
-        <a href="https://www.facebook.com/" target="_blank"><img src="assets/photo/facebook.png" alt="Facebook" class="social-icon"></a>
+      <div class="card">
+        <h3>Комфорт на первом месте</h3>
+        <p>
+          Современные автобусы с просторными креслами, кондиционерами и доступом к Wi-Fi, чтобы каждая поездка проходила с максимальным комфортом.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Простое бронирование</h3>
+        <p>
+          Забронировать билет легко — наш интуитивный интерфейс позволяет найти и оплатить маршрут за считанные минуты.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Надежность и безопасность</h3>
+        <p>
+          Мы сотрудничаем с сертифицированными перевозчиками и регулярно проверяем качество обслуживания, чтобы вы всегда чувствовали себя в безопасности.
+        </p>
       </div>
     </div>
-    <div class="footer-bottom">
-      <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
+    <p class="cta">
+      Присоединяйтесь к сообществу путешественников, которые доверяют нам! Забронируйте билет прямо сейчас и начните свое новое приключение с комфортом и уверенностью.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-contact">
+      <h3>Контакты</h3>
+      <p>Телефон: +1 800 123 456</p>
+      <p>Email: buscompany&#64;gmail.com</p>
     </div>
-  </footer>
+    <div class="footer-social">
+      <h3>Следите за нами</h3>
+      <a href="https://www.instagram.com/" target="_blank">
+        <img src="assets/photo/logo.inst.png" alt="Instagram" class="social-icon">
+      </a>
+      <a href="https://www.facebook.com/" target="_blank">
+        <img src="assets/photo/facebook.png" alt="Facebook" class="social-icon">
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
+  </div>
+</footer>
+
 
 

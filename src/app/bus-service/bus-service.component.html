@@ -23,6 +23,9 @@
       </div>
     </div>
   </div>
+  <div *ngIf="successMessage" class="success-message">
+    {{ successMessage }}
+  </div>
   
   <section>
     <h2>Популярные маршруты</h2>
@@ -105,7 +108,7 @@
       <div class="footer-social">
         <h3>Следите за нами</h3>
         <a href="https://www.instagram.com/" target="_blank">
-          <img src="assets/photo/instagram.png" alt="Instagram" class="social-icon">
+          <img src="assets/photo/logo.inst.png" alt="Instagram" class="social-icon">
         </a>
         <a href="https://www.facebook.com/" target="_blank">
           <img src="assets/photo/facebook.png" alt="Facebook" class="social-icon">

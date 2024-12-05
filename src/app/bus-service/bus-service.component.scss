@@ -78,9 +78,6 @@ header {
     }
   }
   
-
-
-  
   .payment-btn {
     background-color: rgba(0, 0, 0, 0.6);
     color: white;
@@ -93,9 +90,6 @@ header {
       background-color: rgba(0, 0, 0, 0.6);
     }
   }
-  
- 
-
   
   .title {
     font-size: 2rem;
@@ -110,74 +104,6 @@ header {
     color: #888;
   }
   
-  .schedule-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .schedule-item {
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.3s ease;
-  
-    &:hover {
-      transform: translateY(-5px);
-    }
-  
-    .schedule-info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-  
-      .route {
-        font-size: 1.3rem;
-        font-weight: bold;
-        color: #333;
-      }
-  
-      .departure-time {
-        font-size: 1.1rem;
-        color: #555;
-        margin-top: 5px;
-      }
-    }
-  
-    .schedule-details {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-  
-      .price {
-        font-size: 1.2rem;
-        font-weight: bold;
-        color: #333;
-      }
-  
-      .book-btn {
-        background-color: #28a745;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-size: 1rem;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: background-color 0.3s ease;
-  
-        &:hover {
-          background-color: #218838;
-        }
-      }
-    }
-  }
-  
-
   .destination-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -234,6 +160,307 @@ header {
     }
   }
   
+  .reviews {
+    background-color: #f9f9f9;
+    padding: 2rem;
+    
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+  
+    .review-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+  
+    .review-card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      max-width: 320px;
+      flex: 1 1 calc(25% - 1.5rem);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+  
+      &:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+  
+      .review-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        color: #555;
+        font-style: italic;
+        margin-bottom: 1rem;
+      }
+  
+      .review-author {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #333;
+      }
+    }
+  
+    @media (min-width: 768px) {
+      .review-card {
+        flex: 1 1 calc(33.33% - 1.5rem);
+      }
+    }
+  
+    @media (min-width: 1024px) {
+      .review-card {
+        flex: 1 1 calc(25% - 1.5rem);
+      }
+    }
+  }
+  
+
+
+  .filters {
+    background-color: #f8f8f8;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 1.5rem;
+    }
+  
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+  
+      .filter-item {
+        flex: 1 1 calc(33% - 1.5rem);
+        max-width: 300px;
+        input {
+          width: 100%;
+          padding: 1rem;
+          font-size: 1rem;
+          border-radius: 8px;
+          border: 1px solid #ddd;
+          box-sizing: border-box;
+          margin-bottom: 1rem;
+        }
+  
+        button {
+          background-color: black;
+          color: white;
+          padding: 1rem;
+          border: none;
+          border-radius: 8px;
+          width: 100%;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: background-color 0.3s;
+  
+          &:hover {
+            background-color: black;
+          }
+        }
+      }
+    }
+  
+    @media (min-width: 768px) {
+      .filter-group {
+        .filter-item {
+          flex: 1 1 calc(25% - 1.5rem);
+        }
+      }
+    }
+  
+    @media (min-width: 1024px) {
+      padding: 3rem;
+    }
+  }
+  
+  .best-offers {
+    background-color: #fff;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .best-offers h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .offers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+  }
+  
+  .offer-card {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 300px;
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .offer-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .offer-card img {
+    width: 100%;
+    height: auto;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .offer-details {
+    padding: 1rem;
+  }
+  
+  .offer-details h4 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .offer-details p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+ 
+  .buy-ticket {
+    background-color: #333; 
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .buy-ticket:hover {
+    background-color: #444; 
+  }
+  
+
+
+.map {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  #map {
+    width: 100%;
+    height: 400px;
+    border-radius: 8px;
+  }
+  
+
+    &:hover {
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+
+footer {
+  margin-top: 20px;
+  padding-top: 20px;
+}
+
+
+.destination-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.destination-container {
+    position: relative;
+    overflow: hidden;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    img {
+        width: 100%;
+        height: 250px; 
+        object-fit: cover;
+        border-bottom: 2px solid #ddd;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    .destination-info {
+        padding: 15px;
+        background-color: #fff;
+
+        .destination-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .destination-price {
+            font-size: 1rem;
+            color: #444;
+            margin: 5px 0;
+        }
+
+        .buy-ticket {
+            background-color: #333; 
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+                background-color: #444; 
+            }
+        }
+    }
+}
+
   .success-message {
     position: fixed;
     top: 20px;
@@ -248,6 +475,7 @@ header {
     animation: fadeOut 3s forwards;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
+
   footer {
     background-color: #333;
     color: white;

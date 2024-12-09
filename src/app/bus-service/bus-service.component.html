@@ -12,31 +12,72 @@
   <h2>Фильтры</h2>
   <div class="filter-group">
     <div class="filter-item">
-      <input type="text" placeholder="Откуда" [(ngModel)]="filters.from" />
+      <select [(ngModel)]="filters.from" [disabled]="showRouteImage">
+        <option value="">Откуда</option>
+        <option *ngFor="let destination of destinations" [value]="destination.name">{{ destination.prettyName }}</option>
+      </select>
     </div>
     <div class="filter-item">
-      <input type="text" placeholder="Куда" [(ngModel)]="filters.to" />
+      <select [(ngModel)]="filters.to" [disabled]="showRouteImage">
+        <option value="">Куда</option>
+        <option *ngFor="let destination of destinations" [value]="destination.name">{{ destination.prettyName }}</option>
+      </select>
     </div>
     <div class="filter-item">
       <input type="date" [(ngModel)]="filters.date" />
     </div>
+
+
+    
     <div class="filter-item">
-      <input type="number" placeholder="Макс. цена" [(ngModel)]="filters.price" />
+      <select [(ngModel)]="filters.busType">
+        <option value="">Тип автобуса</option>
+        <option value="luxury">Люкс</option>
+        <option value="regular">Обычный</option>
+      </select>
     </div>
+
     <div class="filter-item">
-      <button (click)="applyFilters()">Применить</button>
+      <select [(ngModel)]="filters.sortOrder">
+        <option value="asc">Цена по возрастанию</option>
+        <option value="desc">Цена по убыванию</option>
+      </select>
+    </div>
+
+    <div class="filter-item">
+      <button (click)="applyFilters()">Применить фильтры</button>
     </div>
   </div>
 </section>
+<div class="selected-route-info" *ngIf="showRouteImage">
+  <h3>Выбранный маршрут: {{ filters.from }} - {{ filters.to }}</h3>
+  <div *ngIf="filters.from && filters.to">
+    <div class="city-images">
+      <div class="city-info">
+        <h4>{{ filters.from }}</h4>
+        <div>
+          <img [src]="getCityImage(filters.from)" alt="{{ filters.from }}" class="route-image" />
+        </div>
+        <p>{{ getCityDescription(filters.from) }}</p>
+        <button (click)="addToCart(filters.from, getCityPrice(filters.from), getCityImage(filters.from))">Купить билет</button>
+      </div>
 
-<div *ngIf="successMessage" class="success-message">
-  {{ successMessage }}
+      <div class="city-info">
+        <h4>{{ filters.to }}</h4>
+        <div>
+          <img [src]="getCityImage(filters.to)" alt="{{ filters.to }}" class="route-image" />
+        </div>
+        <p>{{ getCityDescription(filters.to) }}</p>
+        <button (click)="addToCart(filters.to, getCityPrice(filters.to), getCityImage(filters.to))">Купить билет</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <section class="best-offers">
   <h3>Лучшие предложения</h3>
   <div class="offers">
-    <div *ngFor="let bus of popularDestinations" class="offer-card">
+    <div *ngFor="let bus of filteredBuses" class="offer-card">
       <img [src]="bus.image" [alt]="bus.route">
       <div class="offer-details">
         <h4>{{ bus.route }}</h4>
@@ -53,11 +94,11 @@
 <section>
   <h2>Популярные маршруты</h2>
   <div class="destination-grid">
-    <div class="destination-container" *ngFor="let destination of popularDestinations">
-      <img [src]="destination.image" [alt]="destination.route">
+    <div class="destination-container" *ngFor="let destination of combinedDestinations">
+      <img [src]="destination.image" [alt]="destination.route" class="destination-image">
       <div class="destination-info">
-        <span class="destination-name">{{ destination.route }}</span><br>
-        <span class="destination-price">Цена: {{ destination.price | currency:'USD':true }}</span>
+        <span class="destination-name">{{ destination.route }}</span><br>  
+        <span class="destination-price">Цена: {{ destination.price | currency:'USD' }}</span>
         <button class="buy-ticket" (click)="addToCart(destination.route, destination.price, destination.image)">
           Купить билет
         </button>
@@ -65,6 +106,7 @@
     </div>
   </div>
 </section>
+
 
 <section class="reviews">
   <div class="container">
@@ -82,6 +124,10 @@
   <h2>Карта маршрутов</h2>
   <div id="map" style="height: 300px;"></div>
 </section>
+
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
 
 <footer>
   <div class="footer-container">

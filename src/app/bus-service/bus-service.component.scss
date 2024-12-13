@@ -317,7 +317,14 @@ header {
       padding: 3rem;
     }
   }
-  
+  .route-length {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #333;
+  text-align: center;
+}
+
   .selected-route-info {
     display: flex;
     flex-direction: column;
@@ -354,6 +361,7 @@ header {
         padding: 15px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         transition: box-shadow 0.3s ease, transform 0.3s ease;
+        margin: 10px 20px;
   
         &:hover {
           transform: translateY(-5px);
@@ -487,7 +495,22 @@ header {
   }
   
 
-
+  .route-selector {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #218838;
+  }
 .map {
   margin-top: 40px;
   padding: 20px;

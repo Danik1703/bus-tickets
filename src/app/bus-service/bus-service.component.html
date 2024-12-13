@@ -17,18 +17,18 @@
         <option *ngFor="let destination of destinations" [value]="destination.name">{{ destination.prettyName }}</option>
       </select>
     </div>
+
     <div class="filter-item">
       <select [(ngModel)]="filters.to" [disabled]="showRouteImage">
         <option value="">Куда</option>
         <option *ngFor="let destination of destinations" [value]="destination.name">{{ destination.prettyName }}</option>
       </select>
     </div>
+
     <div class="filter-item">
       <input type="date" [(ngModel)]="filters.date" />
     </div>
 
-
-    
     <div class="filter-item">
       <select [(ngModel)]="filters.busType">
         <option value="">Тип автобуса</option>
@@ -49,6 +49,8 @@
     </div>
   </div>
 </section>
+
+
 <div class="selected-route-info" *ngIf="showRouteImage">
   <h3>Выбранный маршрут: {{ filters.from }} - {{ filters.to }}</h3>
   <div *ngIf="filters.from && filters.to">
@@ -124,7 +126,6 @@
   <h2>Карта маршрутов</h2>
   <div id="map" style="height: 300px;"></div>
 </section>
-
 <div *ngIf="successMessage" class="success-message">
   {{ successMessage }}
 </div>

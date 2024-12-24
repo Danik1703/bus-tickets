@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SuccessMessageService } from '../services/success-message.service';
 import { BusService } from '../services/bus.service';
 import * as L from 'leaflet';
+import 'leaflet-routing-machine';
+
 
 @Component({
   selector: 'app-bus-service',
@@ -57,6 +59,8 @@ export class BusServiceComponent implements OnInit {
   map: L.Map | undefined;
   polyline: L.Polyline | undefined;
   distanceMarker: L.Marker | undefined;
+  distance: number = 0;
+  travelTime: string = '';
 
   constructor(private busService: BusService, private successMessageService: SuccessMessageService) {}
 
@@ -82,7 +86,6 @@ export class BusServiceComponent implements OnInit {
     const city = this.destinations.find(d => d.name === cityName);
     return city ? city.price : 0; 
   }
-
 
   getCityImage(cityName: string): string {
     const city = this.destinations.find(d => d.name === cityName);
@@ -113,7 +116,7 @@ export class BusServiceComponent implements OnInit {
     alert(`Билет на рейс ${schedule.route} забронирован!`);
   }
 
-  applyFilters(): void {
+  applyFilters(): void { 
     this.filteredBuses = this.buses.filter((bus) => {
       return (
         (!this.filters.price || bus.price <= this.filters.price) &&
@@ -133,124 +136,68 @@ export class BusServiceComponent implements OnInit {
       const fromCity = this.destinations.find(city => city.name === this.filters.from);
       const toCity = this.destinations.find(city => city.name === this.filters.to);
       if (fromCity && toCity) {
-        const distance = this.calculateDistance(fromCity.coordinates, toCity.coordinates);  
-        this.drawRouteOnMap(fromCity.coordinates, toCity.coordinates, distance);
+        this.distance = this.calculateDistance(fromCity.coordinates, toCity.coordinates);  
+        this.travelTime = this.calculateTravelTime(this.distance);
+        this.drawRouteOnMapWithRouting(fromCity.coordinates, toCity.coordinates);
       }
     }
-  }
+}
 
-  calculateDistance(from: [number, number], to: [number, number]): number {
-    const R = 6371; 
-    const lat1 = this.degreesToRadians(from[0]);
-    const lon1 = this.degreesToRadians(from[1]);
-    const lat2 = this.degreesToRadians(to[0]);
-    const lon2 = this.degreesToRadians(to[1]);
+calculateTravelTime(distance: number): string {
+    const travelTimeInHours = distance / 50; 
+    const hours = Math.floor(travelTimeInHours);
+    const minutes = Math.round((travelTimeInHours - hours) * 60);
+    return `${hours} ч ${minutes} мин`;
+}
 
-    const dLat = lat2 - lat1;
-    const dLon = lon2 - lon1;
-
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1) * Math.cos(lat2) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c; 
-  }
-
-  degreesToRadians(degrees: number): number {
-    return degrees * (Math.PI / 180);
-  }
-
-  initializeMap(): void {
-    this.map = L.map('map').setView([51.505, -0.09], 2); 
+initializeMap(): void {
+    this.map = L.map('map').setView([51.505, -0.09], 13); 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
-  
+
+
     this.destinations.forEach((destination) => {
       const markerIcon = L.icon({
-        iconUrl: destination.images[0],
+        iconUrl: destination.images[0], 
         iconSize: [30, 30],
         iconAnchor: [15, 30],
         popupAnchor: [0, -30]
       });
-  
+
       L.marker(destination.coordinates, { icon: markerIcon })
         .addTo(this.map!)
         .bindPopup(destination.prettyName);
     });
-  }
-  
-  drawRouteOnMap(from: [number, number], to: [number, number], distance: number): void {
+}
+
+calculateDistance(fromCoordinates: [number, number], toCoordinates: [number, number]): number {
+    const from = L.latLng(fromCoordinates[0], fromCoordinates[1]);
+    const to = L.latLng(toCoordinates[0], toCoordinates[1]);
+    return from.distanceTo(to);
+}
+
+drawRouteOnMapWithRouting(from: [number, number], to: [number, number]): void {
+  if (this.map) {
     if (this.polyline) {
-      this.map?.removeLayer(this.polyline);
+      this.map.removeLayer(this.polyline);
     }
-    if (this.distanceMarker) {
-      this.map?.removeLayer(this.distanceMarker);
-    }
-  
 
-    const travelTime = distance / 50; 
-    const hours = Math.floor(travelTime);
-    const minutes = Math.round((travelTime - hours) * 60);
-    const timeMessage = `${hours} ч ${minutes} мин`;
-  
-    const midPoint: [number, number] = [(from[0] + to[0]) / 2, (from[1] + to[1]) / 2];
-  
+    const routeControl = L.Routing.control({
+      waypoints: [
+        L.latLng(from[0], from[1]),
+        L.latLng(to[0], to[1])
+      ],
+      routeWhileDragging: true,
+      lineOptions: {
+        styles: [
+          { color: 'blue', weight: 4, opacity: 0.7, dashArray: '5, 10' }
+        ],
+        extendToWaypoints: true,
+        missingRouteTolerance: 10
+      },
+    }).addTo(this.map);
 
-    const stops: [number, number][] = [
-      [50.4501, 30.5234],
-      [51.5074, -0.1278],  
-      [48.8566, 2.3522],  
-      
-    ];
-  
-    if (this.map) {
-      const polylineStyle: L.PolylineOptions = {
-        color: 'blue',
-        weight: 4,
-        opacity: 0.7,
-        dashArray: '10, 10',
-        lineJoin: 'round', 
-      };
-      
-  
-      this.polyline = L.polyline([from, to], polylineStyle).addTo(this.map!);
-      this.map.fitBounds(this.polyline.getBounds());
-  
-      this.distanceMarker = L.marker(midPoint)
-        .addTo(this.map!)
-        .bindPopup(`Расстояние: ${distance.toFixed(2)} км\nВремя пути: ${timeMessage}`)
-        .openPopup();
-  
-      stops.forEach((stop) => {
-        L.marker(stop, {
-          icon: L.icon({
-            iconUrl: 'assets/photo/bus-stop.png', 
-            iconSize: [25, 25],
-            iconAnchor: [12, 25],
-            popupAnchor: [0, -25],
-          }),
-        })
-        .addTo(this.map!)
-        .bindPopup('Остановка');
-      });
-  
-    
-      const animateMarker = L.marker(from).addTo(this.map);
-      const latlngs = [from, to];
-      let currentIndex = 0;
-      const animationSpeed = 100; 
-  
-      const moveMarker = () => {
-        if (currentIndex < latlngs.length) {
-          animateMarker.setLatLng(latlngs[currentIndex]);
-          currentIndex++;
-          setTimeout(moveMarker, animationSpeed); 
-        }
-      };
-  
-      moveMarker(); 
-    }
   }
+}
 }

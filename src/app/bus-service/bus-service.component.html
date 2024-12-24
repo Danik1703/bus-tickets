@@ -51,6 +51,8 @@
 </section>
 
 
+
+
 <div class="selected-route-info" *ngIf="showRouteImage">
   <h3>Выбранный маршрут: {{ filters.from }} - {{ filters.to }}</h3>
   <div *ngIf="filters.from && filters.to">
@@ -129,6 +131,19 @@
 <div *ngIf="successMessage" class="success-message">
   {{ successMessage }}
 </div>
+
+<!-- <div *ngIf="filters.from && filters.to" class="route-summary">
+  <h3>Маршрут: {{ filters.from }} - {{ filters.to }}</h3>
+  <div class="route-details">
+    <div class="route-icon">
+      <img src="assets/photo/bus-stop.png" alt="Distance" />
+    </div>
+    <div class="route-info">
+      <p><strong>Расстояние:</strong> {{ distance | number: '1.0-2' }} км</p>
+      <p><strong>Время в пути:</strong> {{ travelTime }}</p>
+    </div>
+  </div>
+</div> -->
 
 <footer>
   <div class="footer-container">

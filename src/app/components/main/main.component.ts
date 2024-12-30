@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { BusServiceComponent } from 'src/app/bus-service/bus-service.component';
-
-
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -10,14 +8,15 @@ import { BusServiceComponent } from 'src/app/bus-service/bus-service.component';
 export class MainComponent implements OnInit {
 
   images: string[] = [
-    'assets/photo/usa.jpg',
-    'assets/photo/warsawa.jpg',
-    'assets/photo/paris.jpg',
-    'assets/photo/mehiko.jpg',
-    'assets/photo/berlin.jpg',
-    'assets/photo/paris.2.jpg',
-    'assets/photo/tyrkish.jpg'
+    this.getAsset('assets/photo/usa.jpg'),
+    this.getAsset('assets/photo/warsawa.jpg'),
+    this.getAsset('assets/photo/paris.jpg'),
+    this.getAsset('assets/photo/mehiko.jpg'),
+    this.getAsset('assets/photo/berlin.jpg'),
+    this.getAsset('assets/photo/paris.2.jpg'),
+    this.getAsset('assets/photo/tyrkish.jpg')
   ];
+  
   currentSlideIndex = 0;
   slideInterval: any;
 
@@ -38,6 +37,11 @@ export class MainComponent implements OnInit {
     }
   }
 
+
+
+  getAsset(path: string): string {
+    return path;
+  }
 
   setCurrentSlide(index: number): void {
     this.currentSlideIndex = index;

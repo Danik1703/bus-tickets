@@ -1,6 +1,6 @@
-<header>
+
   <div class="logo-container">
-    <img src="assets/photo/logo.png" alt="Логотип" class="logo">
+    <img [src]="getAsset('assets/photo/logo.png')" alt="Логотип" class="logo">
   </div>
   <div class="center-text">
     <h1>Bus Tickets</h1>
@@ -11,11 +11,9 @@
   </div>
   <div class="cart-container">
     <a href="#" class="cart-link" (click)="openModal()">
-      <img src="assets/photo/cart.png" alt="Корзина" class="cart-icon">
+      <img [src]="getAsset('assets/photo/cart.png')" alt="Корзина" class="cart-icon">
     </a>
   </div>
-</header>
-
 
 <div id="cart-modal" class="modal">
   <div class="modal-content">
@@ -43,6 +41,7 @@
     </div>
   </div>
 </div>
+
 <section class="company-info">
   <div class="container">
     <h1>Путешествуйте легко и комфортно</h1>
@@ -74,6 +73,7 @@
     </p>
   </div>
 </section>
+
 <section class="banner">
   <div class="slider">
     <div class="slide" *ngFor="let image of images; let i = index" [class.active]="currentSlideIndex === i">
@@ -130,24 +130,22 @@
   </div>
 </section>
 
-<footer>
-  <div class="footer-container">
-    <div class="footer-contact">
-      <h3>Контакты</h3>
-      <p>Телефон: +1 800 123 456</p>
-      <p>Email: buscompany&#64;gmail.com</p>
-    </div>
-    <div class="footer-social">
-      <h3>Следите за нами</h3>
-      <a href="https://www.instagram.com/" target="_blank">
-        <img src="assets/photo/logo.inst.png" alt="Instagram" class="social-icon">
-      </a>
-      <a href="https://www.facebook.com/" target="_blank">
-        <img src="assets/photo/facebook.png" alt="Facebook" class="social-icon">
-      </a>
-    </div>
+<div class="footer-container">
+  <div class="footer-contact">
+    <h3>Контакты</h3>
+    <p>Телефон: +1 800 123 456</p>
+    <p>Email: buscompany&#64;gmail.com</p>
   </div>
-  <div class="footer-bottom">
-    <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
+  <div class="footer-social">
+    <h3>Следите за нами</h3>
+    <a href="https://www.instagram.com/" target="_blank">
+      <img [src]="getAsset('assets/photo/logo.inst.png')" alt="Instagram" class="social-icon">
+    </a>
+    <a href="https://www.facebook.com/" target="_blank">
+      <img [src]="getAsset('assets/photo/facebook.png')" alt="Facebook" class="social-icon">
+    </a>
   </div>
-</footer>
+</div>
+<div class="footer-bottom">
+  <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
+</div>

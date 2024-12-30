@@ -1,12 +1,10 @@
-<header>
   <div class="logo-container">
-    <img src="assets/photo/logo.png" alt="Логотип" class="logo" />
+    <img [src]="getAsset('assets/photo/logo.png')" alt="Логотип" class="logo" />
   </div>
   <h2 class="title">Расписание автобусных рейсов</h2>
   <div class="nav-links">
     <a routerLink="/" class="nav-link" routerLinkActive="active-link">Главная</a>
   </div>
-</header>
 
 <section class="filters">
   <h2>Фильтры</h2>
@@ -132,20 +130,7 @@
   {{ successMessage }}
 </div>
 
-<!-- <div *ngIf="filters.from && filters.to" class="route-summary">
-  <h3>Маршрут: {{ filters.from }} - {{ filters.to }}</h3>
-  <div class="route-details">
-    <div class="route-icon">
-      <img src="assets/photo/bus-stop.png" alt="Distance" />
-    </div>
-    <div class="route-info">
-      <p><strong>Расстояние:</strong> {{ distance | number: '1.0-2' }} км</p>
-      <p><strong>Время в пути:</strong> {{ travelTime }}</p>
-    </div>
-  </div>
-</div> -->
 
-<footer>
   <div class="footer-container">
     <div class="footer-contact">
       <h3>Контакты</h3>
@@ -155,14 +140,13 @@
     <div class="footer-social">
       <h3>Следите за нами</h3>
       <a href="https://www.instagram.com/" target="_blank">
-        <img src="assets/photo/logo.inst.png" alt="Instagram" class="social-icon">
+        <img [src]="getAsset('assets/photo/logo.inst.png')" alt="Instagram" class="social-icon">
       </a>
       <a href="https://www.facebook.com/" target="_blank">
-        <img src="assets/photo/facebook.png" alt="Facebook" class="social-icon">
+        <img [src]="getAsset('assets/photo/facebook.png')" alt="Facebook" class="social-icon">
       </a>
     </div>
   </div>
   <div class="footer-bottom">
     <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
   </div>
-</footer>

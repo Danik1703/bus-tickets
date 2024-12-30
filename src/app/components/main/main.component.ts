@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BusServiceComponent } from 'src/app/bus-service/bus-service.component';
+import { PlatformHelper } from '@natec/mef-dev-platform-connector';
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -8,13 +10,13 @@ import { BusServiceComponent } from 'src/app/bus-service/bus-service.component';
 export class MainComponent implements OnInit {
 
   images: string[] = [
-    this.getAsset('assets/photo/usa.jpg'),
-    this.getAsset('assets/photo/warsawa.jpg'),
-    this.getAsset('assets/photo/paris.jpg'),
-    this.getAsset('assets/photo/mehiko.jpg'),
-    this.getAsset('assets/photo/berlin.jpg'),
-    this.getAsset('assets/photo/paris.2.jpg'),
-    this.getAsset('assets/photo/tyrkish.jpg')
+    this.getAsset('/photo/usa.jpg'),
+    this.getAsset('/photo/warsawa.jpg'),
+    this.getAsset('/photo/paris.jpg'),
+    this.getAsset('/photo/mehiko.jpg'),
+    this.getAsset('/photo/berlin.jpg'),
+    this.getAsset('/photo/paris.2.jpg'),
+    this.getAsset('/photo/tyrkish.jpg')
   ];
   
   currentSlideIndex = 0;
@@ -39,8 +41,8 @@ export class MainComponent implements OnInit {
 
 
 
-  getAsset(path: string): string {
-    return path;
+  getAsset(url:string): string{
+    return PlatformHelper.getAssetUrl() + url
   }
 
   setCurrentSlide(index: number): void {

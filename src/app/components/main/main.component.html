@@ -1,6 +1,6 @@
-
+  <header>
   <div class="logo-container">
-    <img [src]="getAsset('assets/photo/logo.png')" alt="Логотип" class="logo">
+    <img [src]="getAsset('/photo/logo.png')" alt="Логотип" class="logo">
   </div>
   <div class="center-text">
     <h1>Bus Tickets</h1>
@@ -11,10 +11,10 @@
   </div>
   <div class="cart-container">
     <a href="#" class="cart-link" (click)="openModal()">
-      <img [src]="getAsset('assets/photo/cart.png')" alt="Корзина" class="cart-icon">
+      <img [src]="getAsset('/photo/cart.png')" alt="Корзина" class="cart-icon">
     </a>
   </div>
-
+</header>
 <div id="cart-modal" class="modal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
@@ -130,6 +130,7 @@
   </div>
 </section>
 
+<footer>
 <div class="footer-container">
   <div class="footer-contact">
     <h3>Контакты</h3>
@@ -139,13 +140,14 @@
   <div class="footer-social">
     <h3>Следите за нами</h3>
     <a href="https://www.instagram.com/" target="_blank">
-      <img [src]="getAsset('assets/photo/logo.inst.png')" alt="Instagram" class="social-icon">
+      <img [src]="getAsset('/photo/logo.inst.png')" alt="Instagram" class="social-icon">
     </a>
     <a href="https://www.facebook.com/" target="_blank">
-      <img [src]="getAsset('assets/photo/facebook.png')" alt="Facebook" class="social-icon">
+      <img [src]="getAsset('/photo/facebook.png')" alt="Facebook" class="social-icon">
     </a>
   </div>
 </div>
 <div class="footer-bottom">
   <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
 </div>
+</footer>

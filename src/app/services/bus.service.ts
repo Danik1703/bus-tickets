@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class BusService {
-  private apiBaseUrl = 'https://localhost:5001/api/buses'; // Адрес API
+  private apiBaseUrl = 'https://localhost:5001/api/buses'; 
 
   constructor(private http: HttpClient) {}
 

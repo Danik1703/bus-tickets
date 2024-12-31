@@ -4,8 +4,7 @@ import { BusService } from '../services/bus.service';
 import { PlatformHelper } from '@natec/mef-dev-platform-connector';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
-
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-bus-service',
@@ -114,14 +113,31 @@ export class BusServiceComponent implements OnInit {
     localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     this.calculateTotal();
     this.successMessageService.sendMessage(`Маршрут "${route}" добавлен в корзину!`);
+    Swal.fire({
+      icon: 'success',
+      title: 'Успішно!',
+      text: `Маршрут "${route}" додано в кошик!`,
+      confirmButtonText: 'ОК'
+    });
   }
-
+  
   calculateTotal(): void {
     this.totalAmount = this.cartItems.reduce((sum, item) => sum + item.price, 0);
   }
 
   bookTicket(schedule: any): void {
-    alert(`Билет на рейс ${schedule.route} забронирован!`);
+    Swal.fire({
+      title: 'Бронювання квитка',
+      text: `Ви впевнені, що хочете забронювати квиток на маршрут ${schedule.route}?`,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Так, забронювати!',
+      cancelButtonText: 'Відміна'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire('Успіх!', `Білет на рейс ${schedule.route} заброньовано!`, 'success');
+      }
+    });
   }
 
   applyFilters(): void { 

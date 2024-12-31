@@ -19,7 +19,10 @@
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
     <h2>Корзина</h2>
-    <div id="cart-items" class="cart">
+    <div *ngIf="cartItems.length === 0" class="empty-message">
+      <p>Ваша корзина пуста.</p>
+    </div>
+    <div *ngIf="cartItems.length > 0" id="cart-items" class="cart">
       <div *ngFor="let item of cartItems; let i = index" class="cart-item">
         <img [src]="item.image" [alt]="item.route" class="cart-item-image">
         <div class="cart-item-info">
@@ -28,19 +31,20 @@
           <button class="remove-btn" (click)="removeFromCart(i)">Удалить</button>
         </div>
       </div>
-    </div>
-    <div id="payment-form">
-      <input type="text" placeholder="Имя" id="name-input">
-      <input type="text" placeholder="Адрес" id="address-input">
-      <input type="text" placeholder="Номер карты" id="card-number-input">
-      <input type="text" placeholder="CVV код" id="cvv-input">
-    </div>
-    <div *ngIf="cartItems.length > 0" class="total">
-      <p>Общая сумма: ${{ totalAmount }}</p>
-      <button class="payment-btn" (click)="processPayment()">Оплатить</button>
+      <div id="payment-form">
+        <input type="text" placeholder="Имя" id="name-input">
+        <input type="text" placeholder="Адрес" id="address-input">
+        <input type="text" placeholder="Номер карты" id="card-number-input">
+        <input type="text" placeholder="CVV код" id="cvv-input">
+      </div>
+      <div class="total">
+        <p>Общая сумма: ${{ totalAmount }}</p>
+        <button class="payment-btn" (click)="processPayment()">Оплатить</button>
+      </div>
     </div>
   </div>
 </div>
+
 
 <section class="company-info">
   <div class="container">

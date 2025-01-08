@@ -94,11 +94,15 @@
 <section>
   <h2>Популярные маршруты</h2>
   <div class="destination-grid">
-    <div class="destination-container" *ngFor="let destination of combinedDestinations">
+    <div class="destination-container" *ngFor="let destination of popularDestinations">
+      <div class="discount-badge" *ngIf="destination.discount">-{{ destination.discount }}%</div>
       <img [src]="destination.image" [alt]="destination.route" class="destination-image">
       <div class="destination-info">
-        <span class="destination-name">{{ destination.route }}</span><br>  
-        <span class="destination-price">Цена: {{ destination.price | currency:'USD' }}</span>
+        <span class="destination-name">{{ destination.route }}</span><br>
+        <span class="destination-price">
+          <span class="old-price">{{ destination.oldPrice | currency:'USD' }}</span> 
+          {{ destination.price | currency:'USD' }}
+        </span>
         <button class="buy-ticket" (click)="addToCart(destination.route, destination.price, destination.image)">
           Купить билет
         </button>
@@ -106,6 +110,7 @@
     </div>
   </div>
 </section>
+
 
 
 <section class="reviews">

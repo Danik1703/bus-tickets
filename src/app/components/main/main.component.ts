@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BusServiceComponent } from 'src/app/bus-service/bus-service.component';
 import { PlatformHelper } from '@natec/mef-dev-platform-connector';
+import { NgsRevealService } from 'ngx-scrollreveal';
 
 @Component({
   selector: 'app-main',

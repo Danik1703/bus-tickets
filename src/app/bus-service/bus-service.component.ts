@@ -23,12 +23,13 @@ export class BusServiceComponent implements OnInit {
   filters = { from: '', to: '', date: '', price: 0, busType: '', sortOrder: 'asc' };
 
   buses = [
-    { route: 'Париж', price: 500, image: this.getAsset('/photo/italy.jpg'), description: 'Откройте для себя романтику французской столицы!', type: 'luxury' },
-    { route: 'Лондон', price: 450, image: this.getAsset('/photo/london.jpg'), description: 'Наслаждайтесь путешествием в столицу Великобритании!', type: 'regular' },
-    { route: 'Мадрид', price: 600, image: this.getAsset('/photo/madrid.jpg'), description: 'Испанская страсть и культура на каждом шагу!', type: 'regular' },
-    { route: 'Варшава', price: 200, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудесная польская столица с богатой историей.', type: 'luxury' },
-    { route: 'Барселона', price: 150, image: this.getAsset('/photo/barselona.jpg'), description: 'Испанская культура и архитектура в одном из самых красивых городов Европы.', type: 'regular' }
+    { route: 'Париж', price: 500, discount: 10, image: this.getAsset('/photo/italy.jpg'), description: 'Откройте для себя романтику французской столицы!', type: 'luxury' },
+    { route: 'Лондон', price: 450, discount: 5, image: this.getAsset('/photo/london.jpg'), description: 'Наслаждайтесь путешествием в столицу Великобритании!', type: 'regular' },
+    { route: 'Мадрид', price: 600, discount: 15, image: this.getAsset('/photo/madrid.jpg'), description: 'Испанская страсть и культура на каждом шагу!', type: 'regular' },
+    { route: 'Варшава', price: 200, discount: 0, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудесная польская столица с богатой историей.', type: 'luxury' },
+    { route: 'Барселона', price: 150, discount: 20, image: this.getAsset('/photo/barselona.jpg'), description: 'Испанская культура и архитектура в одном из самых красивых городов Европы.', type: 'regular' }
   ];
+  
   
   selectedRoute: any = null;
   filteredBuses = [...this.buses];
@@ -46,13 +47,14 @@ export class BusServiceComponent implements OnInit {
   ];
   
   popularDestinations = [
-    { route: 'Київ', price: 700, image: this.getAsset('/photo/kiev.jpg'), description: 'Погрузитесь в историю и культуру столицы Украины!' },
-    { route: 'Лондон', price: 450, image: this.getAsset('/photo/london.jpg'), description: 'Наслаждайтесь путешествием в столицу Великобритании!' },
-    { route: 'Париж', price: 500, image: this.getAsset('/photo/italy.jpg'), description: 'Откройте для себя романтику французской столицы!' },
-    { route: 'Мадрид', price: 600, image: this.getAsset('/photo/madrid.jpg'), description: 'Испанская страсть и культура на каждом шагу!' },
-    { route: 'Варшава', price: 200, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудесная польская столица с богатой историей.' },
-    { route: 'Барселона', price: 150, image: this.getAsset('/photo/barselona.jpg'), description: 'Испанская культура и архитектура в одном из самых красивых городов Европы.' }
+    { route: 'Київ', price: 700, oldPrice: 850, discount: 20, image: this.getAsset('/photo/kiev.jpg'), description: 'Погрузитесь в историю и культуру столицы Украины!' },
+    { route: 'Лондон', price: 450, oldPrice: 500, discount: 10, image: this.getAsset('/photo/london.jpg'), description: 'Наслаждайтесь путешествием в столицу Великобритании!' },
+    { route: 'Париж', price: 500, oldPrice: 600, discount: 15, image: this.getAsset('/photo/italy.jpg'), description: 'Откройте для себя романтику французской столицы!' },
+    { route: 'Мадрид', price: 600, oldPrice: 700, discount: 14, image: this.getAsset('/photo/madrid.jpg'), description: 'Испанская страсть и культура на каждом шагу!' },
+    { route: 'Варшава', price: 200, oldPrice: 250, discount: 20, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудесная польская столица с богатой историей.' },
+    { route: 'Барселона', price: 150, oldPrice: 180, discount: 17, image: this.getAsset('/photo/barselona.jpg'), description: 'Испанская культура и архитектура в одном из самых красивых городов Европы.' }
   ];
+  
   
 
   cartItems: any[] = [];
@@ -83,7 +85,6 @@ export class BusServiceComponent implements OnInit {
     return PlatformHelper.getAssetUrl() + url
   }
 
-
   getCityDescription(cityName: string): string {
     const city = this.destinations.find(d => d.name === cityName);
     return city ? city.description : 'Описание не доступно'; 
@@ -112,7 +113,6 @@ export class BusServiceComponent implements OnInit {
     this.cartItems.push(newItem);
     localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     this.calculateTotal();
-    this.successMessageService.sendMessage(`Маршрут "${route}" добавлен в корзину!`);
     Swal.fire({
       icon: 'success',
       title: 'Успішно!',

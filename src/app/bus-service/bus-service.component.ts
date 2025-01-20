@@ -14,22 +14,21 @@ import Swal from 'sweetalert2';
 export class BusServiceComponent implements OnInit {
   busSchedules: any[] = [];
   reviews = [
-    { text: 'Отличный сервис!', author: 'Анна' },
-    { text: 'Очень удобно и быстро.', author: 'Иван' },
-    { text: 'Лучшие цены на рынке!', author: 'Мария' },
-    { text: 'Путешествую с вами постоянно. Рекомендую!', author: 'Дмитрий' }
+    { text: 'Чудовий сервіс!', author: 'Анна' },
+    { text: 'Дуже зручно та швидко.', author: 'Іван' },
+    { text: 'Найкращі ціни на ринку!', author: 'Марія' },
+    { text: 'Подорожую з вами постійно. Рекомендую!', author: 'Дмитро' }    
   ];
 
   filters = { from: '', to: '', date: '', price: 0, busType: '', sortOrder: 'asc' };
 
   buses = [
-    { route: 'Париж', price: 500, discount: 10, image: this.getAsset('/photo/italy.jpg'), description: 'Откройте для себя романтику французской столицы!', type: 'luxury' },
-    { route: 'Лондон', price: 450, discount: 5, image: this.getAsset('/photo/london.jpg'), description: 'Наслаждайтесь путешествием в столицу Великобритании!', type: 'regular' },
-    { route: 'Мадрид', price: 600, discount: 15, image: this.getAsset('/photo/madrid.jpg'), description: 'Испанская страсть и культура на каждом шагу!', type: 'regular' },
-    { route: 'Варшава', price: 200, discount: 0, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудесная польская столица с богатой историей.', type: 'luxury' },
-    { route: 'Барселона', price: 150, discount: 20, image: this.getAsset('/photo/barselona.jpg'), description: 'Испанская культура и архитектура в одном из самых красивых городов Европы.', type: 'regular' }
+    { route: 'Париж', price: 500, discount: 10, image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!', type: 'luxury' },
+    { route: 'Лондон', price: 450, discount: 5, image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!', type: 'regular' },
+    { route: 'Мадрид', price: 600, discount: 15, image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!', type: 'regular' },
+    { route: 'Варшава', price: 200, discount: 0, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.', type: 'luxury' },
+    { route: 'Барселона', price: 150, discount: 20, image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.', type: 'regular' }
   ];
-  
   
   selectedRoute: any = null;
   filteredBuses = [...this.buses];
@@ -38,22 +37,23 @@ export class BusServiceComponent implements OnInit {
   showRouteImage = false;
   
   destinations: { name: string, prettyName: string, coordinates: [number, number], images: string[], description: string, price: number }[] = [
-    { name: 'Київ', prettyName: 'Київ', coordinates: [50.4501, 30.5234], images: [this.getAsset('/photo/kiev.jpg'), this.getAsset('/photo/kiev.jpg')], description: 'Київ – культурное и историческое сердце Украины.', price: 700 },
-    { name: 'Лондон', prettyName: 'Лондон', coordinates: [51.5074, -0.1278], images: [this.getAsset('/photo/london.jpg'), this.getAsset('/photo/london.jpg')], description: 'Лондон – столица Великобритании, известная своими музеями и историческими памятниками.', price: 450 },
-    { name: 'Париж', prettyName: 'Париж', coordinates: [48.8566, 2.3522], images: [this.getAsset('/photo/paris.jpg'), this.getAsset('/photo/paris.jpg')], description: 'Париж – город любви и искусства.', price: 500 },
-    { name: 'Мадрид', prettyName: 'Мадрид', coordinates: [40.4168, -3.7038], images: [this.getAsset('/photo/madrid.jpg'), this.getAsset('/photo/madrid.jpg')], description: 'Мадрид – душа Испании с богатой культурой и историей.', price: 600 },
-    { name: 'Варшава', prettyName: 'Варшава', coordinates: [52.2298, 21.0118], images: [this.getAsset('/photo/warsawa.jpg'), this.getAsset('/photo/warsawa.jpg')], description: 'Варшава – столица Польши, с древней историей и современным обликом.', price: 200 },
-    { name: 'Барселона', prettyName: 'Барселона', coordinates: [41.3784, 2.1926], images: [this.getAsset('/photo/barselona.jpg'), this.getAsset('/photo/barselona.jpg')], description: 'Барселона – город уникальной архитектуры и яркой культуры.', price: 150 }
+    { name: 'Київ', prettyName: 'Київ', coordinates: [50.4501, 30.5234], images: [this.getAsset('/photo/kiev.jpg'), this.getAsset('/photo/kiev.jpg')], description: 'Київ – культурне й історичне серце України.', price: 700 },
+    { name: 'Лондон', prettyName: 'Лондон', coordinates: [51.5074, -0.1278], images: [this.getAsset('/photo/london.jpg'), this.getAsset('/photo/london.jpg')], description: 'Лондон – столиця Великобританії, відома своїми музеями та історичними пам\'ятками.', price: 450 },
+    { name: 'Париж', prettyName: 'Париж', coordinates: [48.8566, 2.3522], images: [this.getAsset('/photo/paris.jpg'), this.getAsset('/photo/paris.jpg')], description: 'Париж – місто кохання та мистецтва.', price: 500 },
+    { name: 'Мадрид', prettyName: 'Мадрид', coordinates: [40.4168, -3.7038], images: [this.getAsset('/photo/madrid.jpg'), this.getAsset('/photo/madrid.jpg')], description: 'Мадрид – душа Іспанії з багатою культурою й історією.', price: 600 },
+    { name: 'Варшава', prettyName: 'Варшава', coordinates: [52.2298, 21.0118], images: [this.getAsset('/photo/warsawa.jpg'), this.getAsset('/photo/warsawa.jpg')], description: 'Варшава – столиця Польщі з давньою історією та сучасним виглядом.', price: 200 },
+    { name: 'Барселона', prettyName: 'Барселона', coordinates: [41.3784, 2.1926], images: [this.getAsset('/photo/barselona.jpg'), this.getAsset('/photo/barselona.jpg')], description: 'Барселона – місто унікальної архітектури та яскравої культури.', price: 150 }
   ];
   
   popularDestinations = [
-    { route: 'Київ', price: 700, oldPrice: 850, discount: 20, image: this.getAsset('/photo/kiev.jpg'), description: 'Погрузитесь в историю и культуру столицы Украины!' },
-    { route: 'Лондон', price: 450, oldPrice: 500, discount: 10, image: this.getAsset('/photo/london.jpg'), description: 'Наслаждайтесь путешествием в столицу Великобритании!' },
-    { route: 'Париж', price: 500, oldPrice: 600, discount: 15, image: this.getAsset('/photo/italy.jpg'), description: 'Откройте для себя романтику французской столицы!' },
-    { route: 'Мадрид', price: 600, oldPrice: 700, discount: 14, image: this.getAsset('/photo/madrid.jpg'), description: 'Испанская страсть и культура на каждом шагу!' },
-    { route: 'Варшава', price: 200, oldPrice: 250, discount: 20, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудесная польская столица с богатой историей.' },
-    { route: 'Барселона', price: 150, oldPrice: 180, discount: 17, image: this.getAsset('/photo/barselona.jpg'), description: 'Испанская культура и архитектура в одном из самых красивых городов Европы.' }
+    { route: 'Київ', price: 700, oldPrice: 850, discount: 20, image: this.getAsset('/photo/kiev.jpg'), description: 'Пориньте в історію й культуру столиці України!' },
+    { route: 'Лондон', price: 450, oldPrice: 500, discount: 10, image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!' },
+    { route: 'Париж', price: 500, oldPrice: 600, discount: 15, image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!' },
+    { route: 'Мадрид', price: 600, oldPrice: 700, discount: 14, image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!' },
+    { route: 'Варшава', price: 200, oldPrice: 250, discount: 20, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.' },
+    { route: 'Барселона', price: 150, oldPrice: 180, discount: 17, image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.' }
   ];
+  
   
   
 

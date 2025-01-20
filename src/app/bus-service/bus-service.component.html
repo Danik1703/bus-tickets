@@ -1,25 +1,25 @@
-  <header>
+<header>
   <div class="logo-container">
     <img [src]="getAsset('/photo/logo.png')" alt="Логотип" class="logo" />
   </div>
-  <h2 class="title">Расписание автобусных рейсов</h2>
+  <h2 class="title">Розклад автобусних рейсів</h2>
   <div class="nav-links">
-    <a routerLink="/" class="nav-link" routerLinkActive="active-link">Главная</a>
+    <a routerLink="/" class="nav-link" routerLinkActive="active-link">Головна</a>
   </div>
 </header>
 <section class="filters">
-  <h2>Фильтры</h2>
+  <h2>Фільтри</h2>
   <div class="filter-group">
     <div class="filter-item">
       <select [(ngModel)]="filters.from" [disabled]="showRouteImage">
-        <option value="">Откуда</option>
+        <option value="">Звідки</option>
         <option *ngFor="let destination of destinations" [value]="destination.name">{{ destination.prettyName }}</option>
       </select>
     </div>
 
     <div class="filter-item">
       <select [(ngModel)]="filters.to" [disabled]="showRouteImage">
-        <option value="">Куда</option>
+        <option value="">Куди</option>
         <option *ngFor="let destination of destinations" [value]="destination.name">{{ destination.prettyName }}</option>
       </select>
     </div>
@@ -32,25 +32,25 @@
       <select [(ngModel)]="filters.busType">
         <option value="">Тип автобуса</option>
         <option value="luxury">Люкс</option>
-        <option value="regular">Обычный</option>
+        <option value="regular">Звичайний</option>
       </select>
     </div>
 
     <div class="filter-item">
       <select [(ngModel)]="filters.sortOrder">
-        <option value="asc">Цена по возрастанию</option>
-        <option value="desc">Цена по убыванию</option>
+        <option value="asc">Ціна за зростанням</option>
+        <option value="desc">Ціна за спаданням</option>
       </select>
     </div>
 
     <div class="filter-item">
-      <button (click)="applyFilters()">Применить фильтры</button>
+      <button (click)="applyFilters()">Застосувати фільтри</button>
     </div>
   </div>
 </section>
 
 <div class="selected-route-info" *ngIf="showRouteImage">
-  <h3>Выбранный маршрут: {{ filters.from }} - {{ filters.to }}</h3>
+  <h3>Обраний маршрут: {{ filters.from }} - {{ filters.to }}</h3>
   <div *ngIf="filters.from && filters.to">
     <div class="city-images">
       <div class="city-info">
@@ -59,7 +59,7 @@
           <img [src]="getCityImage(filters.from)" alt="{{ filters.from }}" class="route-image" />
         </div>
         <p>{{ getCityDescription(filters.from) }}</p>
-        <button (click)="addToCart(filters.from, getCityPrice(filters.from), getCityImage(filters.from))">Купить билет</button>
+        <button (click)="addToCart(filters.from, getCityPrice(filters.from), getCityImage(filters.from))">Придбати квиток</button>
       </div>
 
       <div class="city-info">
@@ -68,23 +68,23 @@
           <img [src]="getCityImage(filters.to)" alt="{{ filters.to }}" class="route-image" />
         </div>
         <p>{{ getCityDescription(filters.to) }}</p>
-        <button (click)="addToCart(filters.to, getCityPrice(filters.to), getCityImage(filters.to))">Купить билет</button>
+        <button (click)="addToCart(filters.to, getCityPrice(filters.to), getCityImage(filters.to))">Придбати квиток</button>
       </div>
     </div>
   </div>
 </div>
 
 <section class="best-offers">
-  <h3>Лучшие предложения</h3>
+  <h3>Найкращі пропозиції</h3>
   <div class="offers">
     <div *ngFor="let bus of filteredBuses" class="offer-card">
       <img [src]="bus.image" [alt]="bus.route">
       <div class="offer-details">
         <h4>{{ bus.route }}</h4>
-        <p>Цена: {{ bus.price | currency:'USD' }}</p>
+        <p>Ціна: {{ bus.price | currency:'USD' }}</p>
         <p>{{ bus.description }}</p>
         <button class="buy-ticket" (click)="addToCart(bus.route, bus.price, bus.image)">
-          Купить билет
+          Придбати квиток
         </button>
       </div>
     </div>
@@ -92,7 +92,7 @@
 </section>
 
 <section>
-  <h2>Популярные маршруты</h2>
+  <h2>Популярні маршрути</h2>
   <div class="destination-grid">
     <div class="destination-container" *ngFor="let destination of popularDestinations">
       <div class="discount-badge" *ngIf="destination.discount">-{{ destination.discount }}%</div>
@@ -104,18 +104,16 @@
           {{ destination.price | currency:'USD' }}
         </span>
         <button class="buy-ticket" (click)="addToCart(destination.route, destination.price, destination.image)">
-          Купить билет
+          Придбати квиток
         </button>
       </div>
     </div>
   </div>
 </section>
 
-
-
 <section class="reviews">
   <div class="container">
-    <h2>Отзывы пользователей</h2>
+    <h2>Відгуки користувачів</h2>
     <div class="review-cards">
       <div *ngFor="let review of reviews" class="review-card">
         <p class="review-text">"{{ review.text }}"</p>
@@ -126,7 +124,7 @@
 </section>
 
 <section class="map">
-  <h2>Карта маршрутов</h2>
+  <h2>Карта маршрутів</h2>
   <div id="map" style="height: 300px;"></div>
 </section>
 <div *ngIf="successMessage" class="success-message">
@@ -136,12 +134,12 @@
 <footer>
   <div class="footer-container">
     <div class="footer-contact">
-      <h3>Контакты</h3>
+      <h3>Контакти</h3>
       <p>Телефон: +1 800 123 456</p>
       <p>Email: buscompany&#64;gmail.com</p>
     </div>
     <div class="footer-social">
-      <h3>Следите за нами</h3>
+      <h3>Слідкуйте за нами</h3>
       <a href="https://www.instagram.com/" target="_blank">
         <img [src]="getAsset('/photo/logo.inst.png')" alt="Instagram" class="social-icon">
       </a>
@@ -151,6 +149,6 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
+    <p>&copy; 2024 Bus Tickets. Усі права захищені.</p>
   </div>
 <footer>

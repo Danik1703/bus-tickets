@@ -1,4 +1,4 @@
-  <header>
+<header>
   <div class="logo-container">
     <img [src]="getAsset('/photo/logo.png')" alt="Логотип" class="logo">
   </div>
@@ -6,74 +6,73 @@
     <h1>Bus Tickets</h1>
   </div>
   <div class="nav-links">
-    <a routerLink="/" class="nav-link" routerLinkActive="active-link">Главная</a>
-    <a routerLink="/bus-service" class="nav-link" routerLinkActive="active-link">Просмотр рейсов</a>
+    <a routerLink="/" class="nav-link" routerLinkActive="active-link">Головна</a>
+    <a routerLink="/bus-service" class="nav-link" routerLinkActive="active-link">Перегляд рейсів</a>
   </div>
   <div class="cart-container">
     <a href="#" class="cart-link" (click)="openModal()">
-      <img [src]="getAsset('/photo/cart.png')" alt="Корзина" class="cart-icon">
+      <img [src]="getAsset('/photo/cart.png')" alt="Кошик" class="cart-icon">
     </a>
   </div>
 </header>
 <div id="cart-modal" class="modal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
-    <h2>Корзина</h2>
+    <h2>Кошик</h2>
     <div *ngIf="cartItems.length === 0" class="empty-message">
-      <p>Ваша корзина пуста.</p>
+      <p>Ваш кошик порожній.</p>
     </div>
     <div *ngIf="cartItems.length > 0" id="cart-items" class="cart">
       <div *ngFor="let item of cartItems; let i = index" class="cart-item">
         <img [src]="item.image" [alt]="item.route" class="cart-item-image">
         <div class="cart-item-info">
           <p>{{ item.route }}</p>
-          <p>Цена: ${{ item.price }}</p>
-          <button class="remove-btn" (click)="removeFromCart(i)">Удалить</button>
+          <p>Ціна: ${{ item.price }}</p>
+          <button class="remove-btn" (click)="removeFromCart(i)">Видалити</button>
         </div>
       </div>
       <div id="payment-form">
-        <input type="text" placeholder="Имя" id="name-input">
-        <input type="text" placeholder="Адрес" id="address-input">
-        <input type="text" placeholder="Номер карты" id="card-number-input">
+        <input type="text" placeholder="Ім'я" id="name-input">
+        <input type="text" placeholder="Адреса" id="address-input">
+        <input type="text" placeholder="Номер картки" id="card-number-input">
         <input type="text" placeholder="CVV код" id="cvv-input">
       </div>
       <div class="total">
-        <p>Общая сумма: ${{ totalAmount }}</p>
-        <button class="payment-btn" (click)="processPayment()">Оплатить</button>
+        <p>Загальна сума: ${{ totalAmount }}</p>
+        <button class="payment-btn" (click)="processPayment()">Оплатити</button>
       </div>
     </div>
   </div>
 </div>
 
-
 <section class="company-info">
   <div class="container">
-    <h1>Путешествуйте легко и комфортно</h1>
+    <h1>Подорожуйте легко та комфортно</h1>
     <p class="intro">
-      Добро пожаловать в нашу компанию, где каждый маршрут начинается с заботы о вас. 
-      Мы предлагаем широкий выбор автобусных маршрутов, охватывающих города и страны, 
-      обеспечивая комфорт, безопасность и удобство в каждом путешествии.
+      Ласкаво просимо до нашої компанії, де кожен маршрут починається з турботи про вас. 
+      Ми пропонуємо широкий вибір автобусних маршрутів, які охоплюють міста та країни, 
+      забезпечуючи комфорт, безпеку та зручність у кожній подорожі.
     </p>
     <div class="info-cards">
       <div class="card">
-        <h3>Современные автобусы</h3>
-        <p>Комфортные кресла, Wi-Fi и всё, что нужно для приятного путешествия.</p>
+        <h3>Сучасні автобуси</h3>
+        <p>Зручні крісла, Wi-Fi і все, що потрібно для приємної подорожі.</p>
       </div>
       <div class="card">
-        <h3>Доступные цены</h3>
-        <p>Регулярные скидки и акции для всех наших клиентов.</p>
+        <h3>Доступні ціни</h3>
+        <p>Регулярні знижки та акції для всіх наших клієнтів.</p>
       </div>
       <div class="card">
-        <h3>Круглосуточная поддержка</h3>
-        <p>Наша команда всегда готова помочь в любой ситуации.</p>
+        <h3>Цілодобова підтримка</h3>
+        <p>Наша команда завжди готова допомогти у будь-якій ситуації.</p>
       </div>
       <div class="card">
-        <h3>Гибкие условия</h3>
-        <p>Простая система возврата и обмена билетов.</p>
+        <h3>Гнучкі умови</h3>
+        <p>Проста система повернення та обміну квитків.</p>
       </div>
     </div>
     <p class="cta">
-      Присоединяйтесь к тысячам довольных путешественников и начните своё путешествие уже сегодня!
+      Приєднуйтесь до тисяч задоволених мандрівників і починайте свою подорож вже сьогодні!
     </p>
   </div>
 </section>
@@ -96,40 +95,40 @@
 
 <section class="additional-info">
   <div class="container">
-    <h2>Почему выбирают нас?</h2>
+    <h2>Чому обирають нас?</h2>
     <p>
-      Наша компания — это ваш надежный партнер в мире автобусных путешествий. 
-      Мы заботимся о том, чтобы каждая поездка была не только удобной, но и запоминающейся. 
-      Вот что мы предлагаем:
+      Наша компанія — ваш надійний партнер у світі автобусних подорожей. 
+      Ми дбаємо про те, щоб кожна поїздка була не лише зручною, а й незабутньою. 
+      Ось що ми пропонуємо:
     </p>
     <div class="info-cards">
       <div class="card">
-        <h3>Удобные маршруты</h3>
+        <h3>Зручні маршрути</h3>
         <p>
-          Более 500 направлений по всему миру! Мы постоянно расширяем нашу маршрутную сеть, чтобы вы могли добраться туда, куда хотите.
+          Понад 500 напрямків по всьому світу! Ми постійно розширюємо нашу маршрутну мережу, щоб ви могли дістатися туди, куди хочете.
         </p>
       </div>
       <div class="card">
-        <h3>Комфорт на первом месте</h3>
+        <h3>Комфорт на першому місці</h3>
         <p>
-          Современные автобусы с просторными креслами, кондиционерами и доступом к Wi-Fi, чтобы каждая поездка проходила с максимальным комфортом.
+          Сучасні автобуси зі зручними кріслами, кондиціонерами та доступом до Wi-Fi, щоб кожна поїздка проходила з максимальним комфортом.
         </p>
       </div>
       <div class="card">
-        <h3>Простое бронирование</h3>
+        <h3>Просте бронювання</h3>
         <p>
-          Забронировать билет легко — наш интуитивный интерфейс позволяет найти и оплатить маршрут за считанные минуты.
+          Забронювати квиток легко — наш інтуїтивний інтерфейс дозволяє знайти і оплатити маршрут за лічені хвилини.
         </p>
       </div>
       <div class="card">
-        <h3>Надежность и безопасность</h3>
+        <h3>Надійність та безпека</h3>
         <p>
-          Мы сотрудничаем с сертифицированными перевозчиками и регулярно проверяем качество обслуживания, чтобы вы всегда чувствовали себя в безопасности.
+          Ми співпрацюємо з сертифікованими перевізниками та регулярно перевіряємо якість обслуговування, щоб ви завжди почувалися у безпеці.
         </p>
       </div>
     </div>
     <p class="cta">
-      Присоединяйтесь к сообществу путешественников, которые доверяют нам! Забронируйте билет прямо сейчас и начните свое новое приключение с комфортом и уверенностью.
+      Приєднуйтесь до спільноти мандрівників, які довіряють нам! Забронюйте квиток прямо зараз і почніть свою нову пригоду з комфортом та впевненістю.
     </p>
   </div>
 </section>
@@ -137,12 +136,12 @@
 <footer>
 <div class="footer-container">
   <div class="footer-contact">
-    <h3>Контакты</h3>
+    <h3>Контакти</h3>
     <p>Телефон: +1 800 123 456</p>
     <p>Email: buscompany&#64;gmail.com</p>
   </div>
   <div class="footer-social">
-    <h3>Следите за нами</h3>
+    <h3>Слідкуйте за нами</h3>
     <a href="https://www.instagram.com/" target="_blank">
       <img [src]="getAsset('/photo/logo.inst.png')" alt="Instagram" class="social-icon">
     </a>
@@ -152,6 +151,6 @@
   </div>
 </div>
 <div class="footer-bottom">
-  <p>&copy; 2024 Bus Tickets. Все права защищены.</p>
+  <p>&copy; 2024 Bus Tickets. Всі права захищені.</p>
 </div>
 </footer>

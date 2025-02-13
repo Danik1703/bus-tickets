@@ -370,12 +370,11 @@ header {
   
     .filter-group {
       display: flex;
-      flex-wrap: wrap;
       gap: 1.5rem;
       justify-content: center;
   
       .filter-item {
-        flex: 1 1 calc(33% - 1.5rem);
+        flex: 1 1 auto;
         max-width: 320px;
         display: flex;
         flex-direction: column;
@@ -389,7 +388,7 @@ header {
           border-radius: 8px;
           border: 1px solid #ddd;
           box-sizing: border-box;
-          margin-bottom: 1.5rem;
+          margin-bottom: 0; 
           background-color: #fff;
           background-position: right 10px center;
           background-repeat: no-repeat;
@@ -405,11 +404,11 @@ header {
         button {
           background-color: black;
           color: white;
-          padding: 1rem;
+          padding: 1rem; 
           border: none;
           border-radius: 8px;
           width: 100%;
-          font-size: 1.1rem;
+          font-size: 0.9rem; 
           font-weight: 600;
           cursor: pointer;
           transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
@@ -427,6 +426,7 @@ header {
         }
       }
     }
+
   
     @media (min-width: 768px) {
       .filter-group {

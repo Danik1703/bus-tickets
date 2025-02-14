@@ -72,16 +72,30 @@
       </div>
     </div>
   </div>
+  <div *ngIf="isHolidayDiscountApplied()" class="holiday-discount">
+    <p class="discount-text">Знижка {{ getHolidayDiscount() * 100 }}% на празник!</p>
+  </div>
 </div>
 
 <section class="best-offers">
   <h3>Найкращі пропозиції</h3>
   <div class="offers">
     <div *ngFor="let bus of filteredBuses" class="offer-card">
-      <img [src]="bus.image" [alt]="bus.route">
+      <div class="offer-image-container">
+        <img [src]="bus.image" [alt]="bus.route" class="offer-image">
+                <div *ngIf="getHolidayDiscount() > 0" class="discount-overlay">
+          <p class="discount-text">Знижка {{ getHolidayDiscount() * 100 }}% на празник!</p>
+        </div>
+      </div>
       <div class="offer-details">
         <h4>{{ bus.route }}</h4>
-        <p>Ціна: {{ bus.price | currency:'USD' }}</p>
+        <p>Ціна: 
+          <span *ngIf="getHolidayDiscount() > 0">
+            <span class="old-price">{{ bus.price | currency:'USD' }}</span>
+            {{ bus.price * (1 - getHolidayDiscount()) | currency:'USD' }}
+          </span>
+          <span *ngIf="getHolidayDiscount() === 0">{{ bus.price | currency:'USD' }}</span>
+        </p>
         <p>{{ bus.description }}</p>
         <button class="buy-ticket" (click)="addToCart(bus.route, bus.price, bus.image)">
           Придбати квиток
@@ -95,13 +109,15 @@
   <h2>Популярні маршрути</h2>
   <div class="destination-grid">
     <div class="destination-container" *ngFor="let destination of popularDestinations">
-      <div class="discount-badge" *ngIf="destination.discount">-{{ destination.discount }}%</div>
       <img [src]="destination.image" [alt]="destination.route" class="destination-image">
       <div class="destination-info">
         <span class="destination-name">{{ destination.route }}</span><br>
         <span class="destination-price">
-          <span class="old-price">{{ destination.oldPrice | currency:'USD' }}</span> 
-          {{ destination.price | currency:'USD' }}
+          <span *ngIf="getHolidayDiscount() > 0">
+            <span class="old-price">{{ destination.price | currency:'USD' }}</span>
+            {{ destination.price * (1 - getHolidayDiscount()) | currency:'USD' }}
+          </span>
+          <span *ngIf="getHolidayDiscount() === 0">{{ destination.price | currency:'USD' }}</span>
         </span>
         <button class="buy-ticket" (click)="addToCart(destination.route, destination.price, destination.image)">
           Придбати квиток
@@ -110,6 +126,8 @@
     </div>
   </div>
 </section>
+
+
 
 <section class="reviews">
   <div class="container">

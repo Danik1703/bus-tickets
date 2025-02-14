@@ -20,14 +20,21 @@ export class BusServiceComponent implements OnInit {
     { text: 'Подорожую з вами постійно. Рекомендую!', author: 'Дмитро' }    
   ];
 
-  filters = { from: '', to: '', date: '', price: 0, busType: '', sortOrder: 'asc' };
+  filters = {
+    from: '',  
+    to: '',
+    date: '',
+    price: 0,
+    busType: '',
+    sortOrder: 'asc'
+  };
 
   buses = [
-    { route: 'Париж', price: 500, discount: 10, image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!', type: 'luxury' },
-    { route: 'Лондон', price: 450, discount: 5, image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!', type: 'regular' },
-    { route: 'Мадрид', price: 600, discount: 15, image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!', type: 'regular' },
-    { route: 'Варшава', price: 200, discount: 0, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.', type: 'luxury' },
-    { route: 'Барселона', price: 150, discount: 20, image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.', type: 'regular' }
+    { route: 'Париж', price: 500, image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!', type: 'luxury' },
+    { route: 'Лондон', price: 450, image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!', type: 'regular' },
+    { route: 'Мадрид', price: 600, image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!', type: 'regular' },
+    { route: 'Варшава', price: 200, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.', type: 'luxury' },
+    { route: 'Барселона', price: 150, image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.', type: 'regular' }
   ];
   
   selectedRoute: any = null;
@@ -46,14 +53,22 @@ export class BusServiceComponent implements OnInit {
   ];
   
   popularDestinations = [
-    { route: 'Київ', price: 700, oldPrice: 850, discount: 20, image: this.getAsset('/photo/kiev.jpg'), description: 'Пориньте в історію й культуру столиці України!' },
-    { route: 'Лондон', price: 450, oldPrice: 500, discount: 10, image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!' },
-    { route: 'Париж', price: 500, oldPrice: 600, discount: 15, image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!' },
-    { route: 'Мадрид', price: 600, oldPrice: 700, discount: 14, image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!' },
-    { route: 'Варшава', price: 200, oldPrice: 250, discount: 20, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.' },
-    { route: 'Барселона', price: 150, oldPrice: 180, discount: 17, image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.' }
+    { route: 'Київ', price: 700,  image: this.getAsset('/photo/kiev.jpg'), description: 'Пориньте в історію й культуру столиці України!' },
+    { route: 'Лондон', price: 450,  image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!' },
+    { route: 'Париж', price: 500,  image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!' },
+    { route: 'Мадрид', price: 600,  image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!' },
+    { route: 'Варшава', price: 200,  image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.' },
+    { route: 'Барселона', price: 150,  image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.' }
   ];
   
+  holidayDiscounts = [
+    { date: '12-25', discount: 0.2 },   
+    { date: '01-01', discount: 0.3 },    
+    { date: '03-08', discount: 0.15 },  
+    { date: '05-01', discount: 0.1 },   
+    { date: '12-31', discount: 0.25 }, 
+    { date: '11-25', discount: 0.2 }, 
+  ];
   
   
 
@@ -97,7 +112,7 @@ export class BusServiceComponent implements OnInit {
 
   getCityImage(cityName: string): string {
     const city = this.destinations.find(d => d.name === cityName);
-    return city ? city.images[0] : 'assets/photo/default.jpg'; 
+    return city ? city.images[0] : 'assets/photo/bus-stop.png'; 
   }
 
   removeDuplicates(): void {
@@ -140,33 +155,74 @@ export class BusServiceComponent implements OnInit {
     });
   }
 
-  applyFilters(): void { 
-    this.filteredBuses = this.buses.filter((bus) => {
-      return (
-        (!this.filters.price || bus.price <= this.filters.price) &&
-        (!this.filters.busType || bus.type === this.filters.busType)
-      );
-    });
+  getDiscountedPrice(originalPrice: number): number {
+    const discount = this.getHolidayDiscount();
+    return discount > 0 ? originalPrice * (1 - discount) : originalPrice;
+  }
+
+  getHolidayDiscount(): number {
+    const selectedDate = this.filters.date; // Получаем выбранную дату
+    const todayDate = selectedDate ? selectedDate : '';  // Если дата не выбрана, пустое значение
+    const holiday = this.holidayDiscounts.find(holiday => holiday.date === todayDate);
+    return holiday ? holiday.discount : 0;
+  }
+
+  isHolidayDiscountApplied(): boolean {
+    return this.getHolidayDiscount() > 0;
+  }
+
+  applyHolidayDiscount() {
+    const discount = this.getHolidayDiscount();
+    if (discount > 0) {
+      this.totalAmount = this.totalAmount * (1 - discount);
+      Swal.fire({
+        icon: 'info',
+        title: 'Скидка праздника',
+        text: `Сегодня действует скидка ${discount * 100}% на все билеты!`,
+      });
+    }
+  }
   
+
+  applyFilters(): void {
+    const discount = this.getHolidayDiscount();
+    
+    this.filteredBuses = this.buses.filter((bus) => {
+      const matchesFrom = this.filters.from ? bus.route.toLowerCase().includes(this.filters.from.toLowerCase()) : true;
+      const matchesTo = this.filters.to ? bus.route.toLowerCase().includes(this.filters.to.toLowerCase()) : true;
+      const matchesDate = this.filters.date ? bus.route.toLowerCase().includes(this.filters.date.toLowerCase()) : true;
+      const matchesPrice = bus.price <= this.filters.price;
+      const matchesBusType = this.filters.busType ? bus.type === this.filters.busType : true;
+      
+      if (discount > 0) {
+        bus.price = bus.price * (1 - discount);
+      }
+
+      return matchesFrom && matchesTo && matchesDate && matchesPrice && matchesBusType;
+    });
+
     if (this.filters.sortOrder === 'asc') {
       this.filteredBuses.sort((a, b) => a.price - b.price);
     } else if (this.filters.sortOrder === 'desc') {
       this.filteredBuses.sort((a, b) => b.price - a.price);
     }
-  
+
     this.showRouteImage = true;
-  
+
     if (this.filters.from && this.filters.to) {
       const fromCity = this.destinations.find(city => city.name === this.filters.from);
       const toCity = this.destinations.find(city => city.name === this.filters.to);
       if (fromCity && toCity) {
-        this.distance = this.calculateDistance(fromCity.coordinates, toCity.coordinates);  
+        this.distance = this.calculateDistance(fromCity.coordinates, toCity.coordinates);
         this.travelTime = this.calculateTravelTime(this.distance);
         this.drawRouteOnMapWithRouting(fromCity.coordinates, toCity.coordinates);
       }
     }
-}
+  }
 
+
+
+  
 calculateTravelTime(distance: number): string {
     const travelTimeInHours = distance / 50; 
     const hours = Math.floor(travelTimeInHours);
@@ -195,10 +251,13 @@ initializeMap(): void {
     });
 }
 
+
+
+
 calculateDistance(fromCoordinates: [number, number], toCoordinates: [number, number]): number {
-    const from = L.latLng(fromCoordinates[0], fromCoordinates[1]);
-    const to = L.latLng(toCoordinates[0], toCoordinates[1]);
-    return from.distanceTo(to);
+  const from = L.latLng(fromCoordinates[0], fromCoordinates[1]);
+  const to = L.latLng(toCoordinates[0], toCoordinates[1]);
+  return from.distanceTo(to) / 1000; 
 }
 
 drawRouteOnMapWithRouting(from: [number, number], to: [number, number]): void {

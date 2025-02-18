@@ -7,6 +7,7 @@
     <a routerLink="/" class="nav-link" routerLinkActive="active-link">Головна</a>
   </div>
 </header>
+
 <section class="filters">
   <h2>Фільтри</h2>
   <div class="filter-group">
@@ -25,7 +26,7 @@
     </div>
 
     <div class="filter-item">
-      <input type="date" [(ngModel)]="filters.date" />
+      <input type="date" id="date" [(ngModel)]="filters.date" (change)="updateDiscountMessage()" />
     </div>
 
     <div class="filter-item">
@@ -72,8 +73,8 @@
       </div>
     </div>
   </div>
-  <div *ngIf="isHolidayDiscountApplied()" class="holiday-discount">
-    <p class="discount-text">Знижка {{ getHolidayDiscount() * 100 }}% на празник!</p>
+  <div *ngIf="isHolidayDiscountApplied()" class="discount-message">
+    🎉 Сьогодні діє знижка {{ getHolidayDiscount() * 100 }}% на квитки!
   </div>
 </div>
 
@@ -83,9 +84,6 @@
     <div *ngFor="let bus of filteredBuses" class="offer-card">
       <div class="offer-image-container">
         <img [src]="bus.image" [alt]="bus.route" class="offer-image">
-                <div *ngIf="getHolidayDiscount() > 0" class="discount-overlay">
-          <p class="discount-text">Знижка {{ getHolidayDiscount() * 100 }}% на празник!</p>
-        </div>
       </div>
       <div class="offer-details">
         <h4>{{ bus.route }}</h4>
@@ -113,12 +111,11 @@
       <div class="destination-info">
         <span class="destination-name">{{ destination.route }}</span><br>
         <span class="destination-price">
-          <span *ngIf="getHolidayDiscount() > 0">
-            <span class="old-price">{{ destination.price | currency:'USD' }}</span>
+          <span *ngIf="isHolidayDiscountApplied()">
             {{ destination.price * (1 - getHolidayDiscount()) | currency:'USD' }}
           </span>
-          <span *ngIf="getHolidayDiscount() === 0">{{ destination.price | currency:'USD' }}</span>
         </span>
+        <span *ngIf="!isHolidayDiscountApplied()">{{ destination.price | currency:'USD' }}</span>
         <button class="buy-ticket" (click)="addToCart(destination.route, destination.price, destination.image)">
           Придбати квиток
         </button>
@@ -126,8 +123,6 @@
     </div>
   </div>
 </section>
-
-
 
 <section class="reviews">
   <div class="container">
@@ -145,6 +140,7 @@
   <h2>Карта маршрутів</h2>
   <div id="map" style="height: 300px;"></div>
 </section>
+
 <div *ngIf="successMessage" class="success-message">
   {{ successMessage }}
 </div>
@@ -169,4 +165,4 @@
   <div class="footer-bottom">
     <p>&copy; 2024 Bus Tickets. Усі права захищені.</p>
   </div>
-<footer>
+</footer>

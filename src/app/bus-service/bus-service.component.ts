@@ -123,18 +123,24 @@ export class BusServiceComponent implements OnInit {
     );
   }
 
-  addToCart(route: string, price: number, image: string): void {
-    const newItem = { route, price, image };
+  addToCart(route: string, originalPrice: number, image: string): void {
+    const discountedPrice = this.getDiscountedPrice(originalPrice);
+    const newItem = { route, price: discountedPrice, image };
     this.cartItems.push(newItem);
     localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     this.calculateTotal();
+  
+    const discount = this.getHolidayDiscount();
+    const discountText = discount > 0 ? ` Ваша скидка: ${discount * 100}%.` : '';
+  
     Swal.fire({
       icon: 'success',
-      title: 'Успішно!',
-      text: `Маршрут "${route}" додано в кошик!`,
+      title: 'Успешно!',
+      text: `Маршрут "${route}" добавлен в корзину!${discountText}`,
       confirmButtonText: 'ОК'
     });
   }
+  
   
   calculateTotal(): void {
     this.totalAmount = this.cartItems.reduce((sum, item) => sum + item.price, 0);
@@ -161,14 +167,22 @@ export class BusServiceComponent implements OnInit {
   }
 
   getHolidayDiscount(): number {
-    const selectedDate = this.filters.date; // Получаем выбранную дату
-    const todayDate = selectedDate ? selectedDate : '';  // Если дата не выбрана, пустое значение
-    const holiday = this.holidayDiscounts.find(holiday => holiday.date === todayDate);
+    if (!this.filters.date) return 0;
+    
+    const selectedDate = new Date(this.filters.date);
+    const formattedDate = `${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
+  
+    const holiday = this.holidayDiscounts.find(h => h.date === formattedDate);
     return holiday ? holiday.discount : 0;
   }
 
   isHolidayDiscountApplied(): boolean {
     return this.getHolidayDiscount() > 0;
+  }
+  
+
+  updateDiscountMessage(): void {
+    this.getHolidayDiscount(); 
   }
 
   applyHolidayDiscount() {
@@ -221,8 +235,6 @@ export class BusServiceComponent implements OnInit {
   }
 
 
-
-  
 calculateTravelTime(distance: number): string {
     const travelTimeInHours = distance / 50; 
     const hours = Math.floor(travelTimeInHours);

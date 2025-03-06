@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SuccessMessageService } from '../services/success-message.service';
 import { BusService } from '../services/bus.service';
 import { PlatformHelper } from '@natec/mef-dev-platform-connector';
+import { MefDevCardModule } from '@natec/mef-dev-ui-kit';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import Swal from 'sweetalert2';

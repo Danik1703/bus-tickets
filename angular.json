@@ -32,6 +32,9 @@
             ],
             "styles": [
               "node_modules/leaflet/dist/leaflet.css",
+              "node_modules/@natec/mef-dev-ui-kit/src/lib/styles/pg/core.scss",
+              "node_modules/bootstrap/scss/bootstrap.scss",
+              "node_modules/font-awesome/scss/font-awesome.scss",
               "src/styles.scss"            
             ],
             "scripts": []

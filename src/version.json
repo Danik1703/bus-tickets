@@ -1,13 +1,13 @@
 {
     "dirty": true,
-    "raw": "8cf7e32-dirty",
-    "hash": "8cf7e32",
+    "raw": "1862fd1-dirty",
+    "hash": "1862fd1",
     "distance": null,
     "tag": null,
     "semver": null,
-    "suffix": "8cf7e32-dirty",
+    "suffix": "1862fd1-dirty",
     "semverString": null,
     "name": "bus-tickets",
-    "version": "1.1.5",
+    "version": "1.1.6",
     "main": "main.js"
 }

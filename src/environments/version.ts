@@ -8,6 +8,6 @@ export const PLUGIN_VERSION = {
     "suffix": "1862fd1-dirty",
     "semverString": null,
     "name": "bus-tickets",
-    "version": "1.1.5",
+    "version": "1.1.10",
     "main": "main.js"
 };

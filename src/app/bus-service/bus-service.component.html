@@ -12,17 +12,15 @@
   <h2>Фільтри</h2>
   <div class="filter-group">
     <div class="filter-item">
-      <select [(ngModel)]="filters.from" [disabled]="showRouteImage">
-        <option value="">Звідки</option>
-        <option *ngFor="let destination of destinations" [value]="destination.name">{{ destination.prettyName }}</option>
-      </select>
+      <mefdev-select [(ngModel)]="filters.from" [PlaceHolder]="'Звідки'" [FirstDefault]="false">
+        <mefdev-option *ngFor="let destination of destinations" [Label]="destination.prettyName" [Value]="destination.name"></mefdev-option>
+      </mefdev-select>
     </div>
 
     <div class="filter-item">
-      <select [(ngModel)]="filters.to" [disabled]="showRouteImage">
-        <option value="">Куди</option>
-        <option *ngFor="let destination of destinations" [value]="destination.name">{{ destination.prettyName }}</option>
-      </select>
+      <mefdev-select [(ngModel)]="filters.to" [PlaceHolder]="'Куди'" [FirstDefault]="false">
+        <mefdev-option *ngFor="let destination of destinations" [Label]="destination.prettyName" [Value]="destination.name"></mefdev-option>
+      </mefdev-select>
     </div>
 
     <div class="filter-item">
@@ -30,25 +28,27 @@
     </div>
 
     <div class="filter-item">
-      <select [(ngModel)]="filters.busType">
-        <option value="">Тип автобуса</option>
-        <option value="luxury">Люкс</option>
-        <option value="regular">Звичайний</option>
-      </select>
+      <mefdev-select [(ngModel)]="filters.busType" [PlaceHolder]="'Тип автобуса'">
+        <mefdev-option [Label]="'Люкс'" [Value]="'luxury'"></mefdev-option>
+        <mefdev-option [Label]="'Звичайний'" [Value]="'regular'"></mefdev-option>
+      </mefdev-select>
     </div>
 
     <div class="filter-item">
-      <select [(ngModel)]="filters.sortOrder">
-        <option value="asc">Ціна за зростанням</option>
-        <option value="desc">Ціна за спаданням</option>
-      </select>
+      <mefdev-select [(ngModel)]="filters.sortOrder" [PlaceHolder]="'Сортування'">
+        <mefdev-option [Label]="'Ціна за зростанням'" [Value]="'asc'"></mefdev-option>
+        <mefdev-option [Label]="'Ціна за спаданням'" [Value]="'desc'"></mefdev-option>
+      </mefdev-select>
     </div>
 
     <div class="filter-item">
       <button (click)="applyFilters()">Застосувати фільтри</button>
     </div>
+
   </div>
 </section>
+
+
 
 <div class="selected-route-info" *ngIf="showRouteImage">
   <h3>Обраний маршрут: {{ filters.from }} - {{ filters.to }}</h3>

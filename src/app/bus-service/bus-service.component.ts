@@ -235,6 +235,28 @@ export class BusServiceComponent implements OnInit {
     }
   }
 
+  resetFilters(): void {
+    this.filters = {
+      from: '',
+      to: '',
+      date: '',
+      price: 0, 
+      busType: '',
+      sortOrder: 'asc'
+    };
+  
+    this.filteredBuses = [...this.buses];
+    this.showRouteImage = false;
+  
+    Swal.fire({
+      icon: 'info',
+      title: 'Фільтри скинуті!',
+      text: 'Ви можете знову вибирати маршрут.',
+    });
+  }
+  
+
+  
 
 calculateTravelTime(distance: number): string {
     const travelTimeInHours = distance / 50; 

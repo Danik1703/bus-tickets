@@ -266,28 +266,24 @@ calculateTravelTime(distance: number): string {
 }
 
 initializeMap(): void {
-    this.map = L.map('map').setView([51.505, -0.09], 13); 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
+  this.map = L.map('map').setView([51.505, -0.09], 13); 
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(this.map);
 
-
-    this.destinations.forEach((destination) => {
-      const markerIcon = L.icon({
-        iconUrl: destination.images[0], 
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
-        popupAnchor: [0, -30]
-      });
-
-      L.marker(destination.coordinates, { icon: markerIcon })
-        .addTo(this.map!)
-        .bindPopup(destination.prettyName);
+  this.destinations.forEach((destination) => {
+    const markerIcon = L.icon({
+      iconUrl: destination.images[0] || 'assets/photo/bus-stop.png', 
+      iconSize: [30, 30],
+      iconAnchor: [15, 30],
+      popupAnchor: [0, -30]
     });
+
+    L.marker(destination.coordinates, { icon: markerIcon })
+      .addTo(this.map!)
+      .bindPopup(destination.prettyName);
+  });
 }
-
-
-
 
 calculateDistance(fromCoordinates: [number, number], toCoordinates: [number, number]): number {
   const from = L.latLng(fromCoordinates[0], fromCoordinates[1]);
@@ -311,8 +307,8 @@ drawRouteOnMapWithRouting(from: [number, number], to: [number, number]): void {
         styles: [
           { color: 'blue', weight: 4, opacity: 0.7, dashArray: '5, 10' }
         ],
-        extendToWaypoints: true,
-        missingRouteTolerance: 10
+        extendToWaypoints: true, 
+        missingRouteTolerance: 10 
       },
     }).addTo(this.map);
   }

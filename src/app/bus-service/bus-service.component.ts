@@ -14,6 +14,9 @@ import Swal from 'sweetalert2';
 })
 export class BusServiceComponent implements OnInit {
   busSchedules: any[] = [];
+  searchQuery: string = '';  
+  searchSuggestions: string[] = [];  
+  isSuggestionsVisible: boolean = false;  
   reviews = [
     { text: 'Чудовий сервіс!', author: 'Анна' },
     { text: 'Дуже зручно та швидко.', author: 'Іван' },
@@ -124,6 +127,31 @@ export class BusServiceComponent implements OnInit {
     );
   }
 
+
+  onSearchQueryChange(query: string): void {
+    this.searchQuery = query;
+
+    if (this.searchQuery.length >= 3) {
+      this.busService.getSearchSuggestions(this.searchQuery).subscribe(
+        (suggestions) => {
+          this.searchSuggestions = suggestions;
+          this.isSuggestionsVisible = true;
+        },
+        (error) => {
+          console.error('Ошибка при получении подсказок:', error);
+          this.isSuggestionsVisible = false;
+        }
+      );
+    } else {
+      this.isSuggestionsVisible = false;
+    }
+  }
+
+  onSuggestionClick(suggestion: string): void {
+    this.searchQuery = suggestion;
+    this.isSuggestionsVisible = false;
+  }
+
   addToCart(route: string, originalPrice: number, image: string): void {
     const discountedPrice = this.getDiscountedPrice(originalPrice);
     const newItem = { route, price: discountedPrice, image };
@@ -197,6 +225,9 @@ export class BusServiceComponent implements OnInit {
       });
     }
   }
+  
+
+
   
 
   applyFilters(): void {

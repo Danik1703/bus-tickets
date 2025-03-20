@@ -1,3 +1,5 @@
+
+
 <header>
   <div class="logo-container">
     <img [src]="getAsset('/photo/logo.png')" alt="Логотип" class="logo" />
@@ -14,7 +16,7 @@
     <div class="filter-item">
       <mefdev-select [(ngModel)]="filters.from" [PlaceHolder]="'Звідки'" [FirstDefault]="false">
         <mefdev-option *ngFor="let destination of destinations" [Label]="destination.prettyName" [Value]="destination.name"></mefdev-option>
-      </mefdev-select>
+      </mefdev-select>      
     </div>
 
     <div class="filter-item">
@@ -44,11 +46,8 @@
     <div class="filter-item">
       <button (click)="applyFilters()">Застосувати фільтри</button>
     </div>
-
   </div>
 </section>
-
-
 
 <div class="selected-route-info" *ngIf="showRouteImage">
   <h3>Обраний маршрут: {{ filters.from }} - {{ filters.to }}</h3>

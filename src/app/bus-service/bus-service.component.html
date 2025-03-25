@@ -189,26 +189,5 @@
   </div>
 </footer>
 
-<section class="discount-subscription">
-  <h2>Отримати знижку</h2>
-  <form (ngSubmit)="subscribeForDiscount()" #emailForm="ngForm">
-    <div class="email-input">
-      <input
-        type="email"
-        [(ngModel)]="userEmail"
-        placeholder="Введіть ваш email"
-        class="email-input-field"
-        name="email"
-        required
-        #email="ngModel"
-      />
-      <div *ngIf="email.invalid && email.touched" class="error-message">
-        Будь ласка, введіть правильний email.
-      </div>
-    </div>
-    <button type="submit" class="subscribe-button" [disabled]="emailForm.invalid">
-      Підписатися на знижку
-    </button>
-  </form>
-</section>
+
 

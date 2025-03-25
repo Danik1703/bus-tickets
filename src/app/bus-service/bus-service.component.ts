@@ -6,6 +6,7 @@ import { MefDevCardModule } from '@natec/mef-dev-ui-kit';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import Swal from 'sweetalert2';
+import emailjs from 'emailjs-com';
 
 @Component({
   selector: 'app-bus-service',
@@ -13,6 +14,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./bus-service.component.scss'],
 })
 export class BusServiceComponent implements OnInit {
+  userId: string = '';
+  userEmail: string = '';
   busSchedules: any[] = [];
   searchQuery: string = '';  
   searchSuggestions: string[] = [];  
@@ -85,9 +88,16 @@ export class BusServiceComponent implements OnInit {
   distance: number = 0;
   travelTime: string = '';
 
+  userList: string[] = [];
+
   constructor(private busService: BusService, private successMessageService: SuccessMessageService) {}
 
   ngOnInit(): void {
+    this.userId = localStorage.getItem('userId') || 'AdminUserId'; 
+    if (!localStorage.getItem('userId')) {
+      localStorage.setItem('userId', 'AdminUserId'); 
+    }
+    this.userList = this.getUserList();  
     this.initializeMap();
     this.successMessageService.message$.subscribe((message) => {
       this.successMessage = message;
@@ -95,10 +105,79 @@ export class BusServiceComponent implements OnInit {
         this.successMessage = '';
       }, 5000);
     });
-
+    
     this.combinedDestinations = [...this.filteredBuses, ...this.popularDestinations];
     this.removeDuplicates();
   }
+  
+
+
+  getUserList(): string[] {
+    const users = JSON.parse(localStorage.getItem('users') || '[]');
+    return users.map((user: { id: string }) => user.id);  
+  }
+
+  saveUserList(): void {
+    const users = this.userList.map(id => ({ id }));
+    localStorage.setItem('users', JSON.stringify(users));
+  }
+
+  sendEmail(userEmail: string, userMessage: string, price: number): void {
+    if (!userEmail || userEmail.trim() === '') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Помилка!',
+        text: 'Будь ласка, введіть коректну email-адресу.',
+      });
+      return;
+    }
+  
+    const templateParams = {
+      user_id: this.userId,
+      email: userEmail,
+      message: userMessage,
+      ticket_price: price,
+    };
+  
+    emailjs.send('service_i9ksnkh', 'template_05xvp29', templateParams, 'XoqWj2i1jc8eAysk3')
+      .then((response) => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Успіх!',
+          text: 'Ваше повідомлення надіслано успішно.',
+        });
+      }, (error) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Помилка!',
+          text: `Щось пішло не так. Спробуйте ще раз. Деталі: ${error.text}`,
+        });
+      });
+  }
+  
+  sendUserFeedback(): void {
+    const userEmail = 'userExample@gmail.com';
+    const userMessage = 'Вітаємо! Ви отримали знижку на ваш квиток. Слідкуйте за змінами на нашому сайті!';
+    const ticketPrice = 100;
+    this.sendEmail(userEmail, userMessage, ticketPrice);
+  }
+  
+  subscribeForDiscount(): void {
+    if (this.userEmail && this.userEmail.trim() !== '') {
+      const discountMessage = 'Вітаємо! Ви отримали знижку на ваш квиток.';
+      const ticketPrice = 100;
+      this.sendEmail(this.userEmail, discountMessage, ticketPrice);
+    } else {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Помилка!',
+        text: 'Будь ласка, введіть ваш email.',
+      });
+    }
+  }
+  
+  
+
 
   getAsset(url:string): string{
     return PlatformHelper.getAssetUrl() + url
@@ -130,22 +209,18 @@ export class BusServiceComponent implements OnInit {
 
   onSearchQueryChange(query: string): void {
     this.searchQuery = query;
-
+  
     if (this.searchQuery.length >= 3) {
-      this.busService.getSearchSuggestions(this.searchQuery).subscribe(
-        (suggestions) => {
-          this.searchSuggestions = suggestions;
-          this.isSuggestionsVisible = true;
-        },
-        (error) => {
-          console.error('Ошибка при получении подсказок:', error);
-          this.isSuggestionsVisible = false;
-        }
-      );
+      this.searchSuggestions = this.destinations
+        .map(dest => dest.prettyName)
+        .filter(name => name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  
+      this.isSuggestionsVisible = this.searchSuggestions.length > 0;
     } else {
       this.isSuggestionsVisible = false;
     }
   }
+  
 
   onSuggestionClick(suggestion: string): void {
     this.searchQuery = suggestion;
@@ -154,14 +229,17 @@ export class BusServiceComponent implements OnInit {
 
   addToCart(route: string, originalPrice: number, image: string): void {
     const discountedPrice = this.getDiscountedPrice(originalPrice);
+    
     const newItem = { route, price: discountedPrice, image };
     this.cartItems.push(newItem);
+    
     localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+    
     this.calculateTotal();
-  
+    
     const discount = this.getHolidayDiscount();
     const discountText = discount > 0 ? ` Ваша скидка: ${discount * 100}%.` : '';
-  
+    
     Swal.fire({
       icon: 'success',
       title: 'Успешно!',
@@ -170,6 +248,11 @@ export class BusServiceComponent implements OnInit {
     });
   }
   
+
+  isValidRouteId(routeId: string): boolean {
+    const validRouteIds = this.destinations.map(d => d.name);
+    return validRouteIds.includes(routeId);
+  }
   
   calculateTotal(): void {
     this.totalAmount = this.cartItems.reduce((sum, item) => sum + item.price, 0);
@@ -185,6 +268,11 @@ export class BusServiceComponent implements OnInit {
       cancelButtonText: 'Відміна'
     }).then((result) => {
       if (result.isConfirmed) {
+        const ticketPrice = schedule.price;
+        const userMessage = `Ви забронювали квиток на рейс ${schedule.route}. Ціна квитка: ${ticketPrice} грн.`;
+        
+        this.sendEmail(this.userEmail, userMessage, ticketPrice);
+  
         Swal.fire('Успіх!', `Білет на рейс ${schedule.route} заброньовано!`, 'success');
       }
     });
@@ -221,14 +309,21 @@ export class BusServiceComponent implements OnInit {
       Swal.fire({
         icon: 'info',
         title: 'Скидка праздника',
-        text: `Сегодня действует скидка ${discount * 100}% на все билеты!`,
+        text: `Сегодня действует скидка ${discount * 15}% на все билеты!`,
       });
+  
+      if (this.userEmail) {
+        const discountMessage = `Вітаємо! Ви отримали знижку ${discount * 15}% на ваш квиток. Слідкуйте за змінами на нашому сайті!`;
+        this.sendEmail(this.userEmail, discountMessage, this.totalAmount);
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Помилка!',
+          text: 'Будь ласка, введіть ваш email.',
+        });
+      }
     }
   }
-  
-
-
-  
 
   applyFilters(): void {
     const discount = this.getHolidayDiscount();

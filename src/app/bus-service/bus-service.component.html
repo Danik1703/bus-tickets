@@ -1,5 +1,3 @@
-
-
 <header>
   <div class="logo-container">
     <img [src]="getAsset('/photo/logo.png')" alt="Логотип" class="logo" />
@@ -9,6 +7,8 @@
     <a routerLink="/" class="nav-link" routerLinkActive="active-link">Головна</a>
   </div>
 </header>
+
+
 
 <section class="filters">
   <h2>Фільтри</h2>
@@ -123,6 +123,29 @@
   </div>
 </section>
 
+<section class="discount-subscription">
+  <h2>Отримати знижку</h2>
+  <form (ngSubmit)="subscribeForDiscount()" #emailForm="ngForm">
+    <div class="email-input">
+      <input
+        type="email"
+        [(ngModel)]="userEmail"
+        placeholder="Введіть ваш email"
+        class="email-input-field"
+        name="email"
+        required
+        #email="ngModel"
+      />
+      <div *ngIf="email.invalid && email.touched" class="error-message">
+        Будь ласка, введіть правильний email.
+      </div>
+    </div>
+    <button type="submit" class="subscribe-button" [disabled]="emailForm.invalid">
+      Підписатися на знижку
+    </button>
+  </form>
+</section>
+
 <section class="reviews">
   <div class="container">
     <h2>Відгуки користувачів</h2>
@@ -165,3 +188,27 @@
     <p>&copy; 2024 Bus Tickets. Усі права захищені.</p>
   </div>
 </footer>
+
+<section class="discount-subscription">
+  <h2>Отримати знижку</h2>
+  <form (ngSubmit)="subscribeForDiscount()" #emailForm="ngForm">
+    <div class="email-input">
+      <input
+        type="email"
+        [(ngModel)]="userEmail"
+        placeholder="Введіть ваш email"
+        class="email-input-field"
+        name="email"
+        required
+        #email="ngModel"
+      />
+      <div *ngIf="email.invalid && email.touched" class="error-message">
+        Будь ласка, введіть правильний email.
+      </div>
+    </div>
+    <button type="submit" class="subscribe-button" [disabled]="emailForm.invalid">
+      Підписатися на знижку
+    </button>
+  </form>
+</section>
+

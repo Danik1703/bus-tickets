@@ -15,6 +15,8 @@
     </a>
   </div>
 </header>
+
+
 <div id="cart-modal" class="modal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
@@ -22,7 +24,7 @@
     <div *ngIf="cartItems.length === 0" class="empty-message">
       <p>Ваш кошик порожній.</p>
     </div>
-    <div *ngIf="cartItems.length > 0" id="cart-items" class="cart">
+    <div *ngIf="cartItems.length > 0" id="cart-items" class="cart-items">
       <div *ngFor="let item of cartItems; let i = index" class="cart-item">
         <img [src]="item.image" [alt]="item.route" class="cart-item-image">
         <div class="cart-item-info">
@@ -31,12 +33,22 @@
           <button class="remove-btn" (click)="removeFromCart(i)">Видалити</button>
         </div>
       </div>
-      <div id="payment-form">
-        <input type="text" placeholder="Ім'я" id="name-input">
-        <input type="text" placeholder="Адреса" id="address-input">
-        <input type="text" placeholder="Номер картки" id="card-number-input">
-        <input type="text" placeholder="CVV код" id="cvv-input">
+
+      <div class="payment-method">
+        <mefdev-select [Mode]="'combobox'" [FirstDefault]="true">
+          <mefdev-option [Label]="'Карта'" [Value]="'Карта'"></mefdev-option>
+          <mefdev-option [Label]="'Google Pay'" [Value]="'Google Pay'"></mefdev-option>
+          <mefdev-option [Label]="'Apple Pay'" [Value]="'Apple Pay'"></mefdev-option>
+        </mefdev-select>
       </div>
+
+      <div id="payment-form">
+        <input type="text" placeholder="Ім'я" id="name-input" class="input-field">
+        <input type="text" placeholder="Адреса" id="address-input" class="input-field">
+        <input type="text" placeholder="Номер картки" id="card-number-input" class="input-field">
+        <input type="text" placeholder="CVV код" id="cvv-input" class="input-field">
+      </div>
+
       <div class="total">
         <p>Загальна сума: ${{ totalAmount }}</p>
         <button class="payment-btn" (click)="processPayment()">Оплатити</button>
@@ -44,6 +56,7 @@
     </div>
   </div>
 </div>
+
 
 <section class="company-info">
   <div class="container">

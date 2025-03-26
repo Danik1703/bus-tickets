@@ -372,96 +372,196 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.5);
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 999;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 .modal-content {
   padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   position: relative;
-  width: 80%;
+  width: 90%;
   max-width: 600px;
   max-height: 80%;
   overflow-y: auto;
+  text-align: center;
+  animation: slideDown 0.3s ease-in-out;
 }
+
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes slideDown {
-  from {
-    transform: translateY(-20px);
-  }
-  to {
-    transform: translateY(0);
-  }
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .cart-items {
-  max-height: 60vh;
+  max-height: 50vh;
   overflow-y: auto;
-  margin-bottom: 20px;
+  padding: 10px;
+  margin-bottom: 15px;
 }
 
 .cart-item {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .cart-item-image {
-  width: 250px;  
-  height: 250px;  
-  margin-right: 15px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border-radius: 8px;
+  margin-right: 12px;
 }
 
 .cart-item-info {
   flex-grow: 1;
-}
-.remove-btn {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
+  text-align: left;
+
+  p {
+    margin: 5px 0;
+    font-size: 14px;
+    font-weight: 500;
+  }
 }
 
-.remove-btn:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+.remove-btn {
+  background: #666;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: 0.3s;
+
+  &:hover {
+    background: #444;
+  }
 }
 
 .total {
-  margin-top: 20px;
   font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
 }
 
 .payment-btn {
-  background-color: rgba(0, 0, 0, 0.6);
+  background: #666;
   color: white;
   border: none;
+  padding: 12px;
+  width: 100%;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background: #444;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.payment-method {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+mefdev-select {
+  width: 100%;
+  max-width: 250px;
+}
+
+#payment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#payment-form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+#payment-form input:focus {
+  border-color: #666;
+  outline: none;
+}
+
+#payment-form button {
+  background-color: #bbb;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.3s;
+}
+
+#payment-form button:hover {
+  background-color: #999;
+}
+
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 128, 0, 0.5);
+  color: rgba(0, 0, 0, 0.6);
   padding: 10px 20px;
   border-radius: 5px;
-  cursor: pointer;
+  font-size: 16px;
+  z-index: 1000;
+  animation: fadeOut 3s forwards;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-.payment-btn:hover {
-  background-color: rgba(0, 0, 0, 0.6);
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
-
 .success-message {
   position: fixed;
   top: 20px;

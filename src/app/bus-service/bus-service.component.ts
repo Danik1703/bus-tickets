@@ -110,8 +110,6 @@ export class BusServiceComponent implements OnInit {
     this.removeDuplicates();
   }
   
-
-
   getUserList(): string[] {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
     return users.map((user: { id: string }) => user.id);  
@@ -122,7 +120,7 @@ export class BusServiceComponent implements OnInit {
     localStorage.setItem('users', JSON.stringify(users));
   }
 
-  sendEmail(userEmail: string, userMessage: string, price: number): void {
+  sendEmail(userEmail: string, ticket: any): void {
     if (!userEmail || userEmail.trim() === '') {
       Swal.fire({
         icon: 'error',
@@ -135,8 +133,11 @@ export class BusServiceComponent implements OnInit {
     const templateParams = {
       user_id: this.userId,
       email: userEmail,
-      message: userMessage,
-      ticket_price: price,
+      route: ticket.route,
+      price: ticket.price,
+      date: ticket.date || 'Не вказано',
+      busType: ticket.type || 'Звичайний',
+      description: ticket.description || 'Без опису',
     };
   
     emailjs.send('service_i9ksnkh', 'template_05xvp29', templateParams, 'XoqWj2i1jc8eAysk3')
@@ -155,18 +156,19 @@ export class BusServiceComponent implements OnInit {
       });
   }
   
+  
   sendUserFeedback(): void {
     const userEmail = 'userExample@gmail.com';
     const userMessage = 'Вітаємо! Ви отримали знижку на ваш квиток. Слідкуйте за змінами на нашому сайті!';
     const ticketPrice = 100;
-    this.sendEmail(userEmail, userMessage, ticketPrice);
+    this.sendEmail(userEmail, { route: 'Не вказано', price: ticketPrice, description: userMessage });
   }
   
   subscribeForDiscount(): void {
     if (this.userEmail && this.userEmail.trim() !== '') {
       const discountMessage = 'Вітаємо! Ви отримали знижку на ваш квиток.';
       const ticketPrice = 100;
-      this.sendEmail(this.userEmail, discountMessage, ticketPrice);
+      this.sendEmail(this.userEmail, { route: 'Не вказано', price: ticketPrice, description: discountMessage });
     } else {
       Swal.fire({
         icon: 'warning',
@@ -268,10 +270,7 @@ export class BusServiceComponent implements OnInit {
       cancelButtonText: 'Відміна'
     }).then((result) => {
       if (result.isConfirmed) {
-        const ticketPrice = schedule.price;
-        const userMessage = `Ви забронювали квиток на рейс ${schedule.route}. Ціна квитка: ${ticketPrice} грн.`;
-        
-        this.sendEmail(this.userEmail, userMessage, ticketPrice);
+        this.sendEmail(this.userEmail, schedule);
   
         Swal.fire('Успіх!', `Білет на рейс ${schedule.route} заброньовано!`, 'success');
       }
@@ -314,7 +313,7 @@ export class BusServiceComponent implements OnInit {
   
       if (this.userEmail) {
         const discountMessage = `Вітаємо! Ви отримали знижку ${discount * 15}% на ваш квиток. Слідкуйте за змінами на нашому сайті!`;
-        this.sendEmail(this.userEmail, discountMessage, this.totalAmount);
+        this.sendEmail(this.userEmail, { route: 'Не вказано', price: this.totalAmount, description: discountMessage });
       } else {
         Swal.fire({
           icon: 'warning',

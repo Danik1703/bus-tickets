@@ -48,7 +48,6 @@ var app = builder.Build();
 
 app.UseCors("AllowAngularOrigins");
 
-//app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthentication();

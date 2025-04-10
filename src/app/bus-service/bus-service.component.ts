@@ -37,12 +37,13 @@ export class BusServiceComponent implements OnInit {
   };
 
   buses = [
-    { route: 'Париж', price: 500, image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!', type: 'luxury' },
-    { route: 'Лондон', price: 450, image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!', type: 'regular' },
-    { route: 'Мадрид', price: 600, image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!', type: 'regular' },
-    { route: 'Варшава', price: 200, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.', type: 'luxury' },
-    { route: 'Барселона', price: 150, image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.', type: 'regular' }
+    { route: 'Париж', price: 500, image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!', type: 'luxury', routeTime: '2025-04-12T10:00:00Z' },
+    { route: 'Лондон', price: 450, image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!', type: 'regular', routeTime: '2025-04-12T14:00:00Z' },
+    { route: 'Мадрид', price: 600, image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!', type: 'regular', routeTime: '2025-04-13T09:00:00Z' },
+    { route: 'Варшава', price: 200, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.', type: 'luxury', routeTime: '2025-04-13T11:00:00Z' },
+    { route: 'Барселона', price: 150, image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.', type: 'regular', routeTime: '2025-04-14T08:00:00Z' }
   ];
+  
   
   selectedRoute: any = null;
   filteredBuses = [...this.buses];
@@ -95,10 +96,12 @@ export class BusServiceComponent implements OnInit {
   ngOnInit(): void {
     this.userId = localStorage.getItem('userId') || 'AdminUserId'; 
     if (!localStorage.getItem('userId')) {
-      localStorage.setItem('userId', 'AdminUserId'); 
+      localStorage.setItem('userId', 'AdminUserId');
     }
+  
     this.userList = this.getUserList();  
     this.initializeMap();
+    
     this.successMessageService.message$.subscribe((message) => {
       this.successMessage = message;
       setTimeout(() => {
@@ -108,7 +111,63 @@ export class BusServiceComponent implements OnInit {
     
     this.combinedDestinations = [...this.filteredBuses, ...this.popularDestinations];
     this.removeDuplicates();
+    
+    this.checkForUpcomingRoutes();
   }
+  
+  checkForUpcomingRoutes(): void {
+    const now = new Date();
+  
+    this.buses.forEach((bus) => {
+      const departureTime = new Date(bus.routeTime); 
+      const timeDifference = departureTime.getTime() - now.getTime();
+  
+      
+      if (timeDifference >= 24 * 60 * 60 * 1000 && timeDifference <= 48 * 60 * 60 * 1000) {
+        this.showUpcomingRouteReminder(bus);
+      }
+    });
+  }
+  
+  showUpcomingRouteReminder(bus: any): void {
+    Swal.fire({
+      icon: 'info',
+      title: `Рейс через 24–48 годин!`,
+      text: `Ваш рейс в напрямку ${bus.route} відправляється через 24–48 годин. Не забудьте підготуватися!`,
+    });
+  }
+  
+  
+  getReminderTime(routeTime: string): Date {
+    const routeDate = new Date(routeTime);
+    const reminderDate = new Date(routeDate.getTime() - 10 * 60 * 1000); 
+    return reminderDate;
+  }
+  
+  showReminderNotification(): void {
+    const currentTime = new Date();
+    const departureTime = new Date('2025-04-12T15:00:00'); 
+  
+    const timeDiff = departureTime.getTime() - currentTime.getTime();
+    const hoursUntilDeparture = timeDiff / (1000 * 3600); 
+  
+    if (hoursUntilDeparture <= 48 && hoursUntilDeparture > 24) {
+      Swal.fire({
+        title: 'Напоминание',
+        text: 'До вашего рейса осталось 24–48 часов!',
+        icon: 'info',
+        confirmButtonText: 'Ок'
+      });
+    } else if (hoursUntilDeparture <= 10) {
+      Swal.fire({
+        title: 'Напоминание',
+        text: 'Ваш маршрут отправляется через 10 минут!',
+        icon: 'info',
+        confirmButtonText: 'Ок'
+      });
+    }
+  }
+  
   
   getUserList(): string[] {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
@@ -126,6 +185,16 @@ export class BusServiceComponent implements OnInit {
         icon: 'error',
         title: 'Помилка!',
         text: 'Будь ласка, введіть коректну email-адресу.',
+      });
+      return;
+    }
+  
+   
+    if (!ticket.route) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Помилка!',
+        text: 'Маршрут не вказано.',
       });
       return;
     }
@@ -177,8 +246,6 @@ export class BusServiceComponent implements OnInit {
       });
     }
   }
-  
-  
 
 
   getAsset(url:string): string{

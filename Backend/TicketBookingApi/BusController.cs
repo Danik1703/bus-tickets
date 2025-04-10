@@ -131,7 +131,6 @@ public class BusController : ControllerBase
     }
 }
 
-// Модели данных
 public record BusSchedule(int RouteNumber, string DepartureLocation, string DestinationLocation, DateTime DepartureTime, decimal Price);
 public record Destination
 {

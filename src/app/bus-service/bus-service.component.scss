@@ -494,6 +494,30 @@ button:active {
         }
       }
 
+      .mat-form-field {
+        width: 100%;
+      }
+
+      .mat-form-field-label {
+        font-size: 1rem;
+        color: #333;
+      }
+      input[type="time"] {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        box-sizing: border-box;
+        transition: border-color 0.3s ease;
+
+        &:focus {
+          border-color: black;
+          outline: none;
+        }
+      }
+
       button {
         background-color: black;
         color: white;
@@ -532,6 +556,7 @@ button:active {
     padding: 3rem;
   }
 }
+
 
 
 .route-length {

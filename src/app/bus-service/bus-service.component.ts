@@ -31,6 +31,7 @@ export class BusServiceComponent implements OnInit {
     from: '',  
     to: '',
     date: '',
+    time: '',
     price: 0,
     busType: '',
     sortOrder: 'asc'
@@ -92,6 +93,8 @@ export class BusServiceComponent implements OnInit {
   userList: string[] = [];
 
   constructor(private busService: BusService, private successMessageService: SuccessMessageService) {}
+  
+  timeToDepartureMessage: string | null = null;
 
   ngOnInit(): void {
     this.userId = localStorage.getItem('userId') || 'AdminUserId'; 
@@ -101,42 +104,40 @@ export class BusServiceComponent implements OnInit {
   
     this.userList = this.getUserList();  
     this.initializeMap();
-    
+  
     this.successMessageService.message$.subscribe((message) => {
       this.successMessage = message;
       setTimeout(() => {
         this.successMessage = '';
       }, 5000);
     });
-    
+  
     this.combinedDestinations = [...this.filteredBuses, ...this.popularDestinations];
     this.removeDuplicates();
-    
+  
     this.checkForUpcomingRoutes();
+    this.updateDiscountMessage(); 
   }
   
   checkForUpcomingRoutes(): void {
-    const now = new Date();
-  
-    this.buses.forEach((bus) => {
-      const departureTime = new Date(bus.routeTime); 
+    if (this.selectedRoute) {
+      const now = new Date();
+      const departureTime = new Date(this.selectedRoute.routeTime);
       const timeDifference = departureTime.getTime() - now.getTime();
   
-      
       if (timeDifference >= 24 * 60 * 60 * 1000 && timeDifference <= 48 * 60 * 60 * 1000) {
-        this.showUpcomingRouteReminder(bus);
+        this.showUpcomingRouteReminder(this.selectedRoute);
       }
-    });
+    }
   }
   
   showUpcomingRouteReminder(bus: any): void {
     Swal.fire({
       icon: 'info',
-      title: `Рейс через 24–48 годин!`,
+      title: 'Рейс через 24–48 годин!',
       text: `Ваш рейс в напрямку ${bus.route} відправляється через 24–48 годин. Не забудьте підготуватися!`,
     });
   }
-  
   
   getReminderTime(routeTime: string): Date {
     const routeDate = new Date(routeTime);
@@ -289,7 +290,6 @@ export class BusServiceComponent implements OnInit {
       this.isSuggestionsVisible = false;
     }
   }
-  
 
   onSuggestionClick(suggestion: string): void {
     this.searchQuery = suggestion;
@@ -365,8 +365,24 @@ export class BusServiceComponent implements OnInit {
   
 
   updateDiscountMessage(): void {
-    this.getHolidayDiscount(); 
+    if (this.filters.date && this.filters.time) {
+      const selectedDate = new Date(`${this.filters.date} ${this.filters.time}`);
+      const now = new Date();
+      const diffInMs = selectedDate.getTime() - now.getTime();
+      const diffInHours = diffInMs / (1000 * 60 * 60); 
+  
+      if (diffInHours >= 24 && diffInHours <= 48) {
+        this.timeToDepartureMessage = `До відправлення залишилось від 24 до 48 годин.`;
+      } else if (diffInHours <= 10) {
+        this.timeToDepartureMessage = `До відправлення залишилось менше 10 годин!`;
+      } else {
+        this.timeToDepartureMessage = null;
+      }
+    } else {
+      this.timeToDepartureMessage = null;
+    }
   }
+  
 
   applyHolidayDiscount() {
     const discount = this.getHolidayDiscount();
@@ -391,31 +407,74 @@ export class BusServiceComponent implements OnInit {
     }
   }
 
+  filterByDate(): void {
+    if (this.filters.date) {
+      const selectedDate = new Date(this.filters.date);
+      
+      this.filteredBuses = this.buses.filter(bus => {
+        const busDate = new Date(bus.routeTime);
+        return busDate >= selectedDate;
+      });
+    } else {
+      this.filteredBuses = [...this.buses];
+    }
+  }
+
   applyFilters(): void {
     const discount = this.getHolidayDiscount();
     
-    this.filteredBuses = this.buses.filter((bus) => {
-      const matchesFrom = this.filters.from ? bus.route.toLowerCase().includes(this.filters.from.toLowerCase()) : true;
-      const matchesTo = this.filters.to ? bus.route.toLowerCase().includes(this.filters.to.toLowerCase()) : true;
-      const matchesDate = this.filters.date ? bus.route.toLowerCase().includes(this.filters.date.toLowerCase()) : true;
-      const matchesPrice = bus.price <= this.filters.price;
-      const matchesBusType = this.filters.busType ? bus.type === this.filters.busType : true;
-      
-      if (discount > 0) {
-        bus.price = bus.price * (1 - discount);
-      }
-
-      return matchesFrom && matchesTo && matchesDate && matchesPrice && matchesBusType;
-    });
-
-    if (this.filters.sortOrder === 'asc') {
-      this.filteredBuses.sort((a, b) => a.price - b.price);
-    } else if (this.filters.sortOrder === 'desc') {
-      this.filteredBuses.sort((a, b) => b.price - a.price);
+    let filtered = [...this.buses];
+    
+    if (this.filters.from) {
+      filtered = filtered.filter(bus => bus.route.toLowerCase().includes(this.filters.from.toLowerCase()));
     }
-
+    if (this.filters.to) {
+      filtered = filtered.filter(bus => bus.route.toLowerCase().includes(this.filters.to.toLowerCase()));
+    }
+    
+    if (this.filters.date) {
+      const filterDate = new Date(this.filters.date).setHours(0, 0, 0, 0);
+      filtered = filtered.filter(bus => {
+        const busDate = new Date(bus.routeTime).setHours(0, 0, 0, 0);
+        return busDate === filterDate;
+      });
+    }
+  
+    if (this.filters.time) {
+      const filterTime = new Date(`${this.filters.date}T${this.filters.time}`).getHours();
+      filtered = filtered.filter(bus => {
+        const busTime = new Date(bus.routeTime).getHours();
+        return busTime === filterTime;
+      });
+    }
+  
+    if (this.filters.busType) {
+      filtered = filtered.filter(bus => bus.type === this.filters.busType);
+    }
+  
+    if (discount > 0) {
+      filtered = filtered.map(bus => ({
+        ...bus,
+        price: bus.price * (1 - discount)
+      }));
+    }
+  
+    if (this.filters.price) {
+      filtered = filtered.filter(bus => bus.price <= this.filters.price);
+    }
+  
+    if (this.filters.sortOrder === 'asc') {
+      filtered = filtered.sort((a, b) => a.price - b.price);
+    } else if (this.filters.sortOrder === 'desc') {
+      filtered = filtered.sort((a, b) => b.price - a.price);
+    }
+    
+    this.filteredBuses = filtered;
+    this.removeDuplicates();
+  
+    
     this.showRouteImage = true;
-
+  
     if (this.filters.from && this.filters.to) {
       const fromCity = this.destinations.find(city => city.name === this.filters.from);
       const toCity = this.destinations.find(city => city.name === this.filters.to);
@@ -426,12 +485,15 @@ export class BusServiceComponent implements OnInit {
       }
     }
   }
+  
+  
 
   resetFilters(): void {
     this.filters = {
       from: '',
       to: '',
       date: '',
+      time: '',
       price: 0, 
       busType: '',
       sortOrder: 'asc'

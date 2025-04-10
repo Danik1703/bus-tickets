@@ -7,9 +7,6 @@
     <a routerLink="/" class="nav-link" routerLinkActive="active-link">Головна</a>
   </div>
 </header>
-
-
-
 <section class="filters">
   <h2>Фільтри</h2>
   <div class="filter-group">
@@ -26,8 +23,27 @@
     </div>
 
     <div class="filter-item">
-      <input type="date" id="date" [(ngModel)]="filters.date" (change)="updateDiscountMessage()" />
+      <mat-form-field appearance="fill">
+        <mat-label>Дата</mat-label>
+        <input matInput [matDatepicker]="picker" [(ngModel)]="filters.date" (dateChange)="updateDiscountMessage()" placeholder="Оберіть дату">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
+    
+    <div class="filter-item">
+      <mat-form-field appearance="fill">
+        <mat-label>Час</mat-label>
+        <input matInput [ngxTimepicker]="timepicker" [(ngModel)]="filters.time" (change)="updateDiscountMessage()" placeholder="Оберіть час">
+        <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+      </mat-form-field>
+    </div>
+    
+    
+    <div *ngIf="timeToDepartureMessage" class="time-message">
+      <p>{{ timeToDepartureMessage }}</p>
+    </div>
+    
 
     <div class="filter-item">
       <mefdev-select [(ngModel)]="filters.busType" [PlaceHolder]="'Тип автобуса'">
@@ -76,6 +92,7 @@
     🎉 Сьогодні діє знижка {{ getHolidayDiscount() * 100 }}% на квитки!
   </div>
 </div>
+
 
 <section class="best-offers">
   <h3>Найкращі пропозиції</h3>

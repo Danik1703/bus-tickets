@@ -39,12 +39,10 @@
       </mat-form-field>
     </div>
     
-    
     <div *ngIf="timeToDepartureMessage" class="time-message">
       <p>{{ timeToDepartureMessage }}</p>
     </div>
-    
-
+  
     <div class="filter-item">
       <mefdev-select [(ngModel)]="filters.busType" [PlaceHolder]="'Тип автобуса'">
         <mefdev-option [Label]="'Люкс'" [Value]="'luxury'"></mefdev-option>

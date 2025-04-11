@@ -117,25 +117,32 @@ export class BusServiceComponent implements OnInit {
   
     this.checkForUpcomingRoutes();
     this.updateDiscountMessage(); 
+    this.selectedRoute = this.buses[0];
   }
   
   checkForUpcomingRoutes(): void {
-    if (this.selectedRoute) {
-      const now = new Date();
-      const departureTime = new Date(this.selectedRoute.routeTime);
+    const now = new Date();
+    console.log("Текущее время:", now);
+    this.buses.forEach(bus => {
+      const departureTime = new Date(bus.routeTime); 
       const timeDifference = departureTime.getTime() - now.getTime();
-  
-      if (timeDifference >= 24 * 60 * 60 * 1000 && timeDifference <= 48 * 60 * 60 * 1000) {
-        this.showUpcomingRouteReminder(this.selectedRoute);
+      console.log(`Для рейса ${bus.route} разница во времени: ${timeDifference} часов`);
+      
+      
+      if (this.selectedRoute && this.selectedRoute.route === bus.route) {
+        if (timeDifference >= 24 * 60 * 60 * 1000 && timeDifference <= 48 * 60 * 60 * 1000) {
+          this.timeToDepartureMessage = `Ваш рейс в напрямку ${bus.route} відправляється через 24–48 годин. Не забудьте підготуватися!`;
+          this.showUpcomingRouteReminder(bus.route);
+        }
       }
-    }
+    });
   }
   
-  showUpcomingRouteReminder(bus: any): void {
+  showUpcomingRouteReminder(route: string): void {
     Swal.fire({
       icon: 'info',
       title: 'Рейс через 24–48 годин!',
-      text: `Ваш рейс в напрямку ${bus.route} відправляється через 24–48 годин. Не забудьте підготуватися!`,
+      text: `Ваш рейс в напрямку ${route} відправляється через 24–48 годин. Не забудьте підготуватися!`,
     });
   }
   
@@ -167,6 +174,11 @@ export class BusServiceComponent implements OnInit {
         confirmButtonText: 'Ок'
       });
     }
+  }
+
+  selectRoute(route: any): void {
+    this.selectedRoute = route;
+    this.updateDiscountMessage(); 
   }
   
   
@@ -365,25 +377,23 @@ export class BusServiceComponent implements OnInit {
   
 
   updateDiscountMessage(): void {
-    if (this.filters.date && this.filters.time) {
-      const selectedDate = new Date(`${this.filters.date} ${this.filters.time}`);
+    if (this.selectedRoute) {
+      const selectedDateTime = new Date(`${this.filters.date}T${this.filters.time}:00`);
       const now = new Date();
-      const diffInMs = selectedDate.getTime() - now.getTime();
-      const diffInHours = diffInMs / (1000 * 60 * 60); 
-  
-      if (diffInHours >= 24 && diffInHours <= 48) {
-        this.timeToDepartureMessage = `До відправлення залишилось від 24 до 48 годин.`;
-      } else if (diffInHours <= 10) {
-        this.timeToDepartureMessage = `До відправлення залишилось менше 10 годин!`;
+      const timeDifference = selectedDateTime.getTime() - now.getTime();
+
+      if (timeDifference <= 48 * 60 * 60 * 1000 && timeDifference > 24 * 60 * 60 * 1000) {
+        this.timeToDepartureMessage = `До вашого рейсу через 24–48 години. Не забудьте підготуватись!`;
+      } else if (timeDifference <= 24 * 60 * 60 * 1000 && timeDifference > 0) {
+        this.timeToDepartureMessage = `До вашого рейсу залишилось менше ніж 24 години!`;
+      } else if (timeDifference <= 0) {
+        this.timeToDepartureMessage = `Рейс вже вирушив або відправлення занадто скоро.`;
       } else {
-        this.timeToDepartureMessage = null;
+        this.timeToDepartureMessage = null; 
       }
-    } else {
-      this.timeToDepartureMessage = null;
     }
   }
   
-
   applyHolidayDiscount() {
     const discount = this.getHolidayDiscount();
     if (discount > 0) {

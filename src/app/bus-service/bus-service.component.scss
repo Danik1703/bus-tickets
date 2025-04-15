@@ -464,6 +464,11 @@ button:active {
       flex-direction: column;
       align-items: center;
 
+      mat-form-field {
+        width: 100%;
+        max-width: 280px;
+      }
+
       mefdev-select {
         width: 100%;
         --border-color: #ddd;
@@ -478,44 +483,26 @@ button:active {
         }
       }
 
-      input[type="date"] {
-        width: 100%;
-        padding: 1rem;
-        font-size: 1rem;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        box-sizing: border-box;
-        background-color: #fff;
-        transition: border-color 0.3s ease;
-
-        &:focus {
-          border-color: black;
-          outline: none;
-        }
-      }
-
-      .mat-form-field {
-        width: 100%;
-      }
-
-      .mat-form-field-label {
-        font-size: 1rem;
-        color: #333;
-      }
+      input[type="date"],
       input[type="time"] {
         width: 100%;
         padding: 1rem;
         font-size: 1rem;
         border-radius: 8px;
         border: 1px solid #ddd;
-        background-color: #fff;
         box-sizing: border-box;
+        background-color: #fff;
         transition: border-color 0.3s ease;
 
         &:focus {
           border-color: black;
           outline: none;
         }
+      }
+
+      .mat-form-field-label {
+        font-size: 1rem;
+        color: #333;
       }
 
       button {
@@ -544,10 +531,39 @@ button:active {
     }
   }
 
+  .mat-datepicker-content {
+    width: auto;
+    min-width: 250px;
+    max-width: 270px;
+  }
+
+  .mat-calendar {
+    width: auto;
+    max-width: 100%;
+    font-size: 0.8rem !important; 
+  }
+
+  .mat-calendar-header {
+    font-size: 0.8rem !important; 
+  }
+
+  .mat-calendar-body-cell {
+    font-size: 0.7rem !important; 
+    padding: 4px !important;       
+  }
+
+  .mat-calendar-body-cell-content {
+    font-size: 0.7rem !important; 
+  }
+
+  .mat-calendar-button {
+    font-size: 0.8rem !important;
+  }
+
   @media (min-width: 768px) {
     .filter-group {
       .filter-item {
-        flex: 1 1 calc(25% - 1.5rem);
+        flex: 1 1 calc(50% - 1.5rem);
       }
     }
   }
@@ -556,6 +572,7 @@ button:active {
     padding: 3rem;
   }
 }
+
 
 
 

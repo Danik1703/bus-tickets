@@ -35,6 +35,7 @@
               "node_modules/@natec/mef-dev-ui-kit/src/lib/styles/pg/core.scss",
               "node_modules/bootstrap/scss/bootstrap.scss",
               "node_modules/font-awesome/scss/font-awesome.scss",
+              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"            
             ],
             "scripts": []

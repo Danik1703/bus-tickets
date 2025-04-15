@@ -8,6 +8,12 @@ import 'leaflet-routing-machine';
 import Swal from 'sweetalert2';
 import emailjs from 'emailjs-com';
 
+interface Review {
+  text: string;
+  author: string;
+  rating: number;
+}
+
 @Component({
   selector: 'app-bus-service',
   templateUrl: './bus-service.component.html',
@@ -20,11 +26,27 @@ export class BusServiceComponent implements OnInit {
   searchQuery: string = '';  
   searchSuggestions: string[] = [];  
   isSuggestionsVisible: boolean = false;  
-  reviews = [
-    { text: 'Чудовий сервіс!', author: 'Анна' },
-    { text: 'Дуже зручно та швидко.', author: 'Іван' },
-    { text: 'Найкращі ціни на ринку!', author: 'Марія' },
-    { text: 'Подорожую з вами постійно. Рекомендую!', author: 'Дмитро' }    
+  reviews: Review[] = [];
+
+
+  private reviewTexts: string[] = [
+    'Знайшов квиток за хвилину — і вже в дорозі!',
+    'Обожнюю цей сервіс! Бронювання — одне задоволення 💙',
+    'Найкращий сайт для мандрівників! Все швидко і зручно 🚍✈️',
+    'Купівля квитка — як кліком пальця! Просто супер!',
+    'Підтримка відповіла миттєво, допомогли з вибором — дякую!',
+    'Рейси зручно відсортовані, все наочне та зрозуміле 🧳',
+    'Ціни класні, а ще й знижку надіслали — приємно здивували!',
+    'Ідеально для тих, хто шукає комфорт і швидкість 🕐',
+    'Бронювання без стресу! Однозначно рекомендую друзям.',
+    'Сайт красивий, інтуїтивний — знайшов потрібний маршрут за секунди!',
+    'Усе працює як годинник! Вже чекаю на свою наступну поїздку 😊'
+  ];
+  
+
+  private authors: string[] = [
+    'Олег', 'Світлана', 'Тарас', 'Ірина', 'Володимир',
+    'Катерина', 'Андрій', 'Наталія', 'Сергій', 'Марія', 'Антон', 'Юлія'
   ];
 
   filters = {
@@ -95,6 +117,7 @@ export class BusServiceComponent implements OnInit {
   constructor(private busService: BusService, private successMessageService: SuccessMessageService) {}
   
   timeToDepartureMessage: string | null = null;
+  reviewUpdateInterval: any;
 
   ngOnInit(): void {
     this.userId = localStorage.getItem('userId') || 'AdminUserId'; 
@@ -102,8 +125,9 @@ export class BusServiceComponent implements OnInit {
       localStorage.setItem('userId', 'AdminUserId');
     }
   
-    this.userList = this.getUserList();  
-    this.initializeMap();
+    this.reviews = Array.from({ length: 6 }, () => this.generateRandomReview());
+  
+    this.startReviewUpdateInterval(); 
   
     this.successMessageService.message$.subscribe((message) => {
       this.successMessage = message;
@@ -111,24 +135,45 @@ export class BusServiceComponent implements OnInit {
         this.successMessage = '';
       }, 5000);
     });
-  
-    this.combinedDestinations = [...this.filteredBuses, ...this.popularDestinations];
-    this.removeDuplicates();
-  
-    this.checkForUpcomingRoutes();
-    this.updateDiscountMessage(); 
-    this.selectedRoute = this.buses[0];
   }
+  
+  ngOnDestroy(): void {
+    if (this.reviewUpdateInterval) {
+      clearInterval(this.reviewUpdateInterval);
+    }
+  }
+  
+  private generateRandomReview(): Review {
+    const text = this.getRandomItem(this.reviewTexts);
+    const author = this.getRandomItem(this.authors);
+    const rating = this.getRandomInt(4, 5); 
+    return { text, author, rating };
+  }
+  
+  private getRandomItem<T>(array: T[]): T {
+    const index = Math.floor(Math.random() * array.length);
+    return array[index];
+  }
+  
+  private getRandomInt(min: number, max: number): number {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  
+  private startReviewUpdateInterval(): void {
+    this.reviewUpdateInterval = setInterval(() => {
+      this.reviews = Array.from({ length: 6 }, () => this.generateRandomReview());
+    }, 60000); 
+  }
+
   
   checkForUpcomingRoutes(): void {
     const now = new Date();
-    console.log("Текущее время:", now);
+    console.log("Поточний час:", now);
     this.buses.forEach(bus => {
       const departureTime = new Date(bus.routeTime); 
       const timeDifference = departureTime.getTime() - now.getTime();
-      console.log(`Для рейса ${bus.route} разница во времени: ${timeDifference} часов`);
-      
-      
+      console.log(`Для рейсу ${bus.route} різниця у часі: ${timeDifference} мілісекунд`);
+  
       if (this.selectedRoute && this.selectedRoute.route === bus.route) {
         if (timeDifference >= 24 * 60 * 60 * 1000 && timeDifference <= 48 * 60 * 60 * 1000) {
           this.timeToDepartureMessage = `Ваш рейс в напрямку ${bus.route} відправляється через 24–48 годин. Не забудьте підготуватися!`;
@@ -137,6 +182,7 @@ export class BusServiceComponent implements OnInit {
       }
     });
   }
+  
   
   showUpcomingRouteReminder(route: string): void {
     Swal.fire({
@@ -161,20 +207,21 @@ export class BusServiceComponent implements OnInit {
   
     if (hoursUntilDeparture <= 48 && hoursUntilDeparture > 24) {
       Swal.fire({
-        title: 'Напоминание',
-        text: 'До вашего рейса осталось 24–48 часов!',
+        title: 'Нагадування',
+        text: 'До вашого рейсу залишилось 24–48 годин!',
         icon: 'info',
         confirmButtonText: 'Ок'
       });
     } else if (hoursUntilDeparture <= 10) {
       Swal.fire({
-        title: 'Напоминание',
-        text: 'Ваш маршрут отправляется через 10 минут!',
+        title: 'Нагадування',
+        text: 'Ваш маршрут відправляється через 10 хвилин!',
         icon: 'info',
         confirmButtonText: 'Ок'
       });
     }
   }
+  
 
   selectRoute(route: any): void {
     this.selectedRoute = route;
@@ -261,6 +308,17 @@ export class BusServiceComponent implements OnInit {
   }
 
 
+  getAverageRating(): number {
+    if (this.reviews.length === 0) return 0;
+    const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+    return Math.round((total / this.reviews.length) * 10) / 10;
+  }
+  
+  getStars(rating: number): number[] {
+    return Array(Math.round(rating)).fill(0);
+  }
+
+
   getAsset(url:string): string{
     return PlatformHelper.getAssetUrl() + url
   }
@@ -319,12 +377,12 @@ export class BusServiceComponent implements OnInit {
     this.calculateTotal();
     
     const discount = this.getHolidayDiscount();
-    const discountText = discount > 0 ? ` Ваша скидка: ${discount * 100}%.` : '';
+    const discountText = discount > 0 ? ` Ваша знижка: ${discount * 100}%.` : '';
     
     Swal.fire({
       icon: 'success',
-      title: 'Успешно!',
-      text: `Маршрут "${route}" добавлен в корзину!${discountText}`,
+      title: 'Успішно!',
+      text: `Маршрут "${route}" додано в кошик!${discountText}`,
       confirmButtonText: 'ОК'
     });
   }
@@ -400,8 +458,8 @@ export class BusServiceComponent implements OnInit {
       this.totalAmount = this.totalAmount * (1 - discount);
       Swal.fire({
         icon: 'info',
-        title: 'Скидка праздника',
-        text: `Сегодня действует скидка ${discount * 15}% на все билеты!`,
+        title: 'Знижка до свята',
+        text: `Сьогодні діє знижка ${discount * 15}% на всі квитки!`,
       });
   
       if (this.userEmail) {

@@ -372,7 +372,7 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: none;
   justify-content: center;
   align-items: center;
@@ -380,15 +380,19 @@ header {
   animation: fadeIn 0.3s ease-in-out;
 }
 
+.modal.show {
+  display: flex;
+}
+
 .modal-content {
-  padding: 20px;
+  padding: 30px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
   position: relative;
-  width: 90%;
-  max-width: 600px;
-  max-height: 80%;
+  width: 80%;
+  max-width: 800px;
+  max-height: 85%;
   overflow-y: auto;
   text-align: center;
   animation: slideDown 0.3s ease-in-out;
@@ -400,25 +404,36 @@ header {
 }
 
 @keyframes slideDown {
-  from { transform: translateY(-20px); opacity: 0; }
+  from { transform: translateY(-30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-header {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
 }
 
 .cart-items {
   max-height: 50vh;
   overflow-y: auto;
-  padding: 10px;
-  margin-bottom: 15px;
+  padding: 15px;
+  margin-bottom: 20px;
 }
 
 .cart-item {
   display: flex;
   align-items: center;
-  background: #f8f8f8;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  background: #f1f1f1;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.cart-item:hover {
+  transform: translateY(-5px);
 }
 
 .cart-item-image {
@@ -426,7 +441,7 @@ header {
   height: 150px;
   object-fit: cover;
   border-radius: 8px;
-  margin-right: 12px;
+  margin-right: 20px;
 }
 
 .cart-item-info {
@@ -434,45 +449,45 @@ header {
   text-align: left;
 
   p {
-    margin: 5px 0;
-    font-size: 14px;
+    margin: 8px 0;
+    font-size: 16px;
     font-weight: 500;
   }
 }
 
 .remove-btn {
-  background: #666;
+  background: #ff5c5c;
   color: white;
   border: none;
-  padding: 6px 10px;
+  padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 14px;
   transition: 0.3s;
 
   &:hover {
-    background: #444;
+    background: #ff2e2e;
   }
 }
 
 .total {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
-  margin: 10px 0;
+  margin: 15px 0;
 }
 
 .payment-btn {
   background: #666;
   color: white;
   border: none;
-  padding: 12px;
+  padding: 14px;
   width: 100%;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   transition: 0.3s;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 
   &:hover {
     background: #444;
@@ -481,9 +496,9 @@ header {
 
 .close {
   position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 22px;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
   cursor: pointer;
   color: #333;
 
@@ -493,27 +508,27 @@ header {
 }
 
 .payment-method {
-  margin: 10px 0;
+  margin: 15px 0;
   display: flex;
   justify-content: center;
 }
 
 mefdev-select {
   width: 100%;
-  max-width: 250px;
+  max-width: 280px;
 }
 
 #payment-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 #payment-form input {
   width: 100%;
-  padding: 12px;
+  padding: 14px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 16px;
   transition: 0.3s;
 }
@@ -526,9 +541,9 @@ mefdev-select {
 #payment-form button {
   background-color: #bbb;
   color: white;
-  padding: 12px;
+  padding: 14px;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
   width: 100%;

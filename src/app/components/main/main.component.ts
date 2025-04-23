@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { BusServiceComponent } from 'src/app/bus-service/bus-service.component';
 import { PlatformHelper } from '@natec/mef-dev-platform-connector';
-import { NgsRevealService } from 'ngx-scrollreveal';
+import { BehaviorSubject } from 'rxjs';
+
+import Swal from 'sweetalert2';
+
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss']
+  styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
 
@@ -23,16 +26,14 @@ export class MainComponent implements OnInit {
   currentSlideIndex = 0;
   slideInterval: any;
 
-
   cartItems: any[] = [];
   totalAmount: number = 0;
   successMessage: string = '';
+  isModalOpen: boolean = false;
 
   ngOnInit(): void {
-  
     this.startAutoSlide();
-
- 
+    
     const storedCart = localStorage.getItem('cartItems');
     if (storedCart) {
       this.cartItems = JSON.parse(storedCart);
@@ -40,10 +41,8 @@ export class MainComponent implements OnInit {
     }
   }
 
-
-
-  getAsset(url:string): string{
-    return PlatformHelper.getAssetUrl() + url
+  getAsset(url: string): string {
+    return PlatformHelper.getAssetUrl() + url;
   }
 
   setCurrentSlide(index: number): void {
@@ -64,26 +63,26 @@ export class MainComponent implements OnInit {
     this.startAutoSlide();
   }
 
-  
   addToCart(route: string, price: string, image: string): void {
-    const newItem = { route, price: parseFloat(price.replace('$', '')), image };
-    this.cartItems.push(newItem);
+    const existingItemIndex = this.cartItems.findIndex(item => item.route === route);
+    
+    if (existingItemIndex !== -1) {
+      this.cartItems[existingItemIndex].quantity += 1;
+    } else {
+      const newItem = { route, price: parseFloat(price.replace('$', '')), image, quantity: 1 };
+      this.cartItems.push(newItem);
+    }
+    
     localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     this.calculateTotal();
   }
 
   openModal(): void {
-    const modal = document.getElementById('cart-modal');
-    if (modal) {
-      modal.style.display = 'flex';
-    }
+    this.isModalOpen = true;
   }
 
   closeModal(): void {
-    const modal = document.getElementById('cart-modal');
-    if (modal) {
-      modal.style.display = 'none';
-    }
+    this.isModalOpen = false;
   }
 
   removeFromCart(index: number): void {
@@ -95,12 +94,33 @@ export class MainComponent implements OnInit {
   calculateTotal(): void {
     this.totalAmount = this.cartItems.reduce((sum, item) => sum + item.price, 0);
   }
-
+  
   processPayment(): void {
-    alert('Оплата выполнена!');
-    this.cartItems = [];
-    localStorage.removeItem('cartItems');
-    this.totalAmount = 0;
-    this.closeModal();
+    const name = (document.getElementById('name-input') as HTMLInputElement).value;
+    const address = (document.getElementById('address-input') as HTMLInputElement).value;
+    const cardNumber = (document.getElementById('card-number-input') as HTMLInputElement).value;
+    const cvv = (document.getElementById('cvv-input') as HTMLInputElement).value;
+  
+    if (!name || !address || !cardNumber || !cvv) {
+      Swal.fire({
+        title: 'Помилка!',
+        text: 'Будь ласка, заповніть всі поля!',
+        icon: 'error',
+        confirmButtonText: 'Ок'
+      });
+      return;
+    }
+  
+    Swal.fire({
+      title: 'Успіх!',
+      text: 'Оплата виконана!',
+      icon: 'success',
+      confirmButtonText: 'Ок'
+    }).then(() => {
+      this.cartItems = [];
+      localStorage.removeItem('cartItems');
+      this.totalAmount = 0;
+      this.closeModal();
+    });
   }
 }

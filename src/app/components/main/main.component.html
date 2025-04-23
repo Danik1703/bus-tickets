@@ -16,14 +16,15 @@
   </div>
 </header>
 
-
-<div id="cart-modal" class="modal">
+<div id="cart-modal" class="modal" [ngClass]="{'show': isModalOpen}" [@modalAnimation]>
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
-    <h2>Кошик</h2>
+    <h2 class="modal-header">Кошик</h2>
+    
     <div *ngIf="cartItems.length === 0" class="empty-message">
       <p>Ваш кошик порожній.</p>
     </div>
+
     <div *ngIf="cartItems.length > 0" id="cart-items" class="cart-items">
       <div *ngFor="let item of cartItems; let i = index" class="cart-item">
         <img [src]="item.image" [alt]="item.route" class="cart-item-image">
@@ -147,23 +148,23 @@
 </section>
 
 <footer>
-<div class="footer-container">
-  <div class="footer-contact">
-    <h3>Контакти</h3>
-    <p>Телефон: +1 800 123 456</p>
-    <p>Email: buscompany&#64;gmail.com</p>
+  <div class="footer-container">
+    <div class="footer-contact">
+      <h3>Контакти</h3>
+      <p>Телефон: +1 800 123 456</p>
+      <p>Email: buscompany&#64;gmail.com</p>
+    </div>
+    <div class="footer-social">
+      <h3>Слідкуйте за нами</h3>
+      <a href="https://www.instagram.com/" target="_blank">
+        <img [src]="getAsset('/photo/logo.inst.png')" alt="Instagram" class="social-icon">
+      </a>
+      <a href="https://www.facebook.com/" target="_blank">
+        <img [src]="getAsset('/photo/facebook.png')" alt="Facebook" class="social-icon">
+      </a>
+    </div>
   </div>
-  <div class="footer-social">
-    <h3>Слідкуйте за нами</h3>
-    <a href="https://www.instagram.com/" target="_blank">
-      <img [src]="getAsset('/photo/logo.inst.png')" alt="Instagram" class="social-icon">
-    </a>
-    <a href="https://www.facebook.com/" target="_blank">
-      <img [src]="getAsset('/photo/facebook.png')" alt="Facebook" class="social-icon">
-    </a>
+  <div class="footer-bottom">
+    <p>&copy; 2024 Bus Tickets. Всі права захищені.</p>
   </div>
-</div>
-<div class="footer-bottom">
-  <p>&copy; 2024 Bus Tickets. Всі права захищені.</p>
-</div>
 </footer>

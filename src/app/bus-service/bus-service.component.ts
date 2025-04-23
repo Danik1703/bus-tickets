@@ -578,8 +578,6 @@ export class BusServiceComponent implements OnInit {
   }
   
 
-  
-
 calculateTravelTime(distance: number): string {
     const travelTimeInHours = distance / 50; 
     const hours = Math.floor(travelTimeInHours);

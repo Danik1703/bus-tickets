@@ -9,51 +9,52 @@
     <a routerLink="/" class="nav-link" routerLinkActive="active-link">Головна</a>
     <a routerLink="/bus-service" class="nav-link" routerLinkActive="active-link">Перегляд рейсів</a>
   </div>
-  <div class="cart-container">
-    <a href="#" class="cart-link" (click)="openModal()">
-      <img [src]="getAsset('/photo/cart.png')" alt="Кошик" class="cart-icon">
-    </a>
+  <div class="cart-container" (click)="openModal()">
+    <img [src]="getAsset('/photo/cart.png')" alt="Кошик" class="cart-icon">
   </div>
 </header>
 
-<div id="cart-modal" class="modal" [ngClass]="{'show': isModalOpen}" [@modalAnimation]>
-  <div class="modal-content">
-    <span class="close" (click)="closeModal()">&times;</span>
-    <h2 class="modal-header">Кошик</h2>
-    
-    <div *ngIf="cartItems.length === 0" class="empty-message">
-      <p>Ваш кошик порожній.</p>
+<div class="overlay" *ngIf="isModalOpen" (click)="closeModal()"></div>
+
+<div class="cart-modal" [ngClass]="{'open': isModalOpen}">
+  <button class="close-btn" (click)="closeModal()">&times;</button>
+  <h2 class="modal-header">Кошик</h2>
+
+  <div *ngIf="cartItems.length === 0" class="empty-message">
+    <p>Ваш кошик порожній.</p>
+  </div>
+
+  <div *ngIf="cartItems.length > 0" class="cart-items">
+    <div *ngFor="let item of cartItems; let i = index" class="cart-item">
+      <img [src]="item.image" [alt]="item.route" class="cart-item-image">
+      <div class="cart-item-info">
+        <p>{{ item.route }}</p>
+        <p>Ціна: ${{ item.price }}</p>
+        <button class="remove-btn" (click)="removeFromCart(i)">Видалити</button>
+      </div>
     </div>
 
-    <div *ngIf="cartItems.length > 0" id="cart-items" class="cart-items">
-      <div *ngFor="let item of cartItems; let i = index" class="cart-item">
-        <img [src]="item.image" [alt]="item.route" class="cart-item-image">
-        <div class="cart-item-info">
-          <p>{{ item.route }}</p>
-          <p>Ціна: ${{ item.price }}</p>
-          <button class="remove-btn" (click)="removeFromCart(i)">Видалити</button>
-        </div>
-      </div>
+    <div class="payment-method">
+      <mefdev-select [Mode]="'combobox'" [FirstDefault]="true">
+        <mefdev-option [Label]="'Карта'" [Value]="'Карта'"></mefdev-option>
+        <mefdev-option [Label]="'Google Pay'" [Value]="'Google Pay'"></mefdev-option>
+        <mefdev-option [Label]="'Apple Pay'" [Value]="'Apple Pay'"></mefdev-option>
+      </mefdev-select>
+    </div>
 
-      <div class="payment-method">
-        <mefdev-select [Mode]="'combobox'" [FirstDefault]="true">
-          <mefdev-option [Label]="'Карта'" [Value]="'Карта'"></mefdev-option>
-          <mefdev-option [Label]="'Google Pay'" [Value]="'Google Pay'"></mefdev-option>
-          <mefdev-option [Label]="'Apple Pay'" [Value]="'Apple Pay'"></mefdev-option>
-        </mefdev-select>
-      </div>
+    <div class="payment-form">
+      <input #nameInput type="text" placeholder="Ваше ім’я" />
+      <input #addressInput type="text" placeholder="Адреса" />
+      <input #cardNumberInput type="text" placeholder="Номер картки" />
+      <input #cvvInput type="text" placeholder="CVV" />
+      <input #emailInput type="email" placeholder="Ваш email" />
+    </div>
+    
 
-      <div id="payment-form">
-        <input #nameInput id="name-input" type="text" placeholder="Ваше ім’я" />
-        <input #addressInput id="address-input" type="text" placeholder="Адреса" />
-        <input #cardNumberInput id="card-number-input" type="text" placeholder="Номер картки" />
-        <input #cvvInput id="cvv-input" type="text" placeholder="CVV" />
-      </div>
-
-      <div class="total">
-        <p>Загальна сума: ${{ totalAmount }}</p>
-        <button class="payment-btn" (click)="processPayment()">Оплатити</button>
-      </div>
+    <div class="total">
+      <p>Загальна сума: ${{ totalAmount }}</p>
+      <button class="payment-btn" (click)="processPayment()">Оплатити</button>
+      <button class="send-email-btn" (click)="sendEmailWithCart()">Відправити квитки на пошту</button> <!-- Новая кнопка -->
     </div>
   </div>
 </div>

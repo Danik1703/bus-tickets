@@ -107,6 +107,10 @@ export class BusServiceComponent implements OnInit {
   totalAmount: number = 0;
 
   map: L.Map | undefined;
+
+  selectedFrom: [number, number] | null = null;
+  selectedTo: [number, number] | null = null;
+  routeControl: L.Routing.Control | undefined;
   polyline: L.Polyline | undefined;
   distanceMarker: L.Marker | undefined;
   distance: number = 0;
@@ -120,22 +124,28 @@ export class BusServiceComponent implements OnInit {
   reviewUpdateInterval: any;
 
   ngOnInit(): void {
-    this.userId = localStorage.getItem('userId') || 'AdminUserId'; 
+    this.userId = localStorage.getItem('userId') || 'AdminUserId';
     if (!localStorage.getItem('userId')) {
       localStorage.setItem('userId', 'AdminUserId');
     }
-  
+
     this.reviews = Array.from({ length: 6 }, () => this.generateRandomReview());
-  
-    this.startReviewUpdateInterval(); 
-  
+    this.startReviewUpdateInterval();
+
     this.successMessageService.message$.subscribe((message) => {
       this.successMessage = message;
       setTimeout(() => {
         this.successMessage = '';
       }, 5000);
     });
+
+    setTimeout(() => {
+      console.log('Инициализация карты...');
+      this.initializeMap();
+    }, 0);
   }
+
+  
   
   ngOnDestroy(): void {
     if (this.reviewUpdateInterval) {
@@ -578,59 +588,94 @@ export class BusServiceComponent implements OnInit {
   }
   
 
-calculateTravelTime(distance: number): string {
-    const travelTimeInHours = distance / 50; 
-    const hours = Math.floor(travelTimeInHours);
-    const minutes = Math.round((travelTimeInHours - hours) * 60);
-    return `${hours} ч ${minutes} мин`;
-}
-
-initializeMap(): void {
-  this.map = L.map('map').setView([51.505, -0.09], 13); 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(this.map);
-
-  this.destinations.forEach((destination) => {
-    const markerIcon = L.icon({
-      iconUrl: destination.images[0] || 'assets/photo/bus-stop.png', 
-      iconSize: [30, 30],
-      iconAnchor: [15, 30],
-      popupAnchor: [0, -30]
-    });
-
-    L.marker(destination.coordinates, { icon: markerIcon })
-      .addTo(this.map!)
-      .bindPopup(destination.prettyName);
-  });
-}
-
-calculateDistance(fromCoordinates: [number, number], toCoordinates: [number, number]): number {
-  const from = L.latLng(fromCoordinates[0], fromCoordinates[1]);
-  const to = L.latLng(toCoordinates[0], toCoordinates[1]);
-  return from.distanceTo(to) / 1000; 
-}
-
-drawRouteOnMapWithRouting(from: [number, number], to: [number, number]): void {
-  if (this.map) {
-    if (this.polyline) {
-      this.map.removeLayer(this.polyline);
+  initializeMap(): void {
+    if (this.map) {
+      return;
     }
+  
+    const defaultCoords: L.LatLngExpression = [50.4501, 30.5234]; 
+  
+    this.map = L.map('map').setView(defaultCoords, 6);
+  
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map);
+  
+    if (this.destinations && this.destinations.length > 0) {
+      this.destinations.forEach((destination) => {
+        const markerIcon = L.icon({
+          iconUrl: destination.images[0] || 'assets/photo/bus-stop.png',
+          iconSize: [30, 30],
+          iconAnchor: [15, 30],
+          popupAnchor: [0, -30]
+        });
+  
+        const marker = L.marker(destination.coordinates, { icon: markerIcon })
+          .addTo(this.map as L.Map);
+  
+        if (destination.prettyName) {
+          marker.bindPopup(destination.prettyName);
+        }
+  
+        marker.on('click', () => this.selectDestination(destination.coordinates));
+      });
+    } else {
+      L.marker(defaultCoords)
+        .addTo(this.map as L.Map)
+        .openPopup();
+    }
+  }
+  
+  selectDestination(coordinates: [number, number]): void {
+    if (!this.selectedFrom) {
+      this.selectedFrom = coordinates;
+    } else if (!this.selectedTo) {
+      this.selectedTo = coordinates;
+    
+    }
+  
+    if (this.selectedFrom && this.selectedTo) {
+      this.drawRouteOnMapWithRouting(this.selectedFrom, this.selectedTo);
+    }
+  }
 
-    const routeControl = L.Routing.control({
+  drawRouteOnMapWithRouting(from: [number, number], to: [number, number]): void {
+    if (!this.map) {
+      return;
+    }
+    
+    if (this.routeControl) {
+      this.map.removeControl(this.routeControl);
+    }
+  
+    this.routeControl = L.Routing.control({
       waypoints: [
         L.latLng(from[0], from[1]),
         L.latLng(to[0], to[1])
       ],
-      routeWhileDragging: true,
+      routeWhileDragging: false,
+      addWaypoints: false,
+      show: false,
       lineOptions: {
         styles: [
           { color: 'blue', weight: 4, opacity: 0.7, dashArray: '5, 10' }
         ],
-        extendToWaypoints: true, 
-        missingRouteTolerance: 10 
-      },
+        extendToWaypoints: true,
+        missingRouteTolerance: 10
+      }
     }).addTo(this.map);
   }
-}
+
+  calculateDistance(fromCoordinates: [number, number], toCoordinates: [number, number]): number {
+    const from = L.latLng(fromCoordinates[0], fromCoordinates[1]);
+    const to = L.latLng(toCoordinates[0], toCoordinates[1]);
+    return from.distanceTo(to) / 1000; 
+  }
+
+  calculateTravelTime(distance: number): string {
+    const travelTimeInHours = distance / 50; 
+    const hours = Math.floor(travelTimeInHours);
+    const minutes = Math.round((travelTimeInHours - hours) * 60);
+    return `${hours} ч ${minutes} мин`;
+  }
 }

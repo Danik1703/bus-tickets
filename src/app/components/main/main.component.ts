@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core'; 
 import { PlatformHelper } from '@natec/mef-dev-platform-connector';
 import { trigger, transition, style, animate } from '@angular/animations';
 import Swal from 'sweetalert2';
@@ -38,7 +38,7 @@ export class MainComponent implements OnInit {
   @ViewChild('cardNumberInput') cardNumberInput!: ElementRef;
   @ViewChild('cvvInput') cvvInput!: ElementRef;
   @ViewChild('emailInput') emailInput!: ElementRef;
-
+  @Input() destinations: any[] = [];
 
   cartItems: any[] = [];
   totalAmount: number = 0;
@@ -84,24 +84,43 @@ export class MainComponent implements OnInit {
     this.startAutoSlide();
   }
 
+  getCurrentDateTime(): { date: string, time: string } {
+    const now = new Date();
+    return {
+      date: now.toLocaleDateString(),
+      time: now.toLocaleTimeString(),
+    };
+  }
+
   addToCart(route: string, price: string, image: string): void {
     const existingItemIndex = this.cartItems.findIndex(item => item.route === route);
-
+    
+    const destination = this.destinations.find(dest => dest.prettyName === route);
+    
+    const description = destination?.description || 'Без опису';
+    const { date, time } = this.getCurrentDateTime();  
+    const type = destination?.type || 'Звичайний'; 
+    
     if (existingItemIndex !== -1) {
       this.cartItems[existingItemIndex].quantity += 1;
     } else {
       const newItem = {
         route,
-        price: parseFloat(price.replace('$', '')),
+        price: parseFloat(price.replace('$', '')), 
         image,
-        quantity: 1
+        quantity: 1,
+        description,
+        date,
+        time,
+        type
       };
       this.cartItems.push(newItem);
     }
-
+  
     localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
     this.calculateTotal();
   }
+  
 
   removeFromCart(index: number): void {
     this.cartItems.splice(index, 1);
@@ -215,6 +234,20 @@ export class MainComponent implements OnInit {
       });
       return;
     }
+  
+    const tickets = this.cartItems.map(item => ({
+      route: item.route,
+      price: item.price,
+      date: item.date,
+      type: item.type,
+      description: item.description,
+    }));
+  
+    const templateParams = {
+      user_id: this.userId,
+      email: email,
+      tickets: tickets, 
+    };
   
     this.cartItems.forEach(item => {
       this.sendEmail(email, item);

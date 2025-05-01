@@ -564,7 +564,6 @@ export class BusServiceComponent implements OnInit {
     }
   }
   
-  
 
   resetFilters(): void {
     this.filters = {

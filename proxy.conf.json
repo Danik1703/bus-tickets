@@ -1,0 +1,10 @@
+{
+    "/emailjs": {
+      "target": "https://api.emailjs.com",
+      "secure": true,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/emailjs": ""
+      }
+    }
+  }

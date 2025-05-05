@@ -178,7 +178,7 @@ export class MainComponent implements OnInit {
       });
       return;
     }
-
+  
     if (!ticket.route) {
       Swal.fire({
         icon: 'error',
@@ -187,7 +187,7 @@ export class MainComponent implements OnInit {
       });
       return;
     }
-
+  
     const templateParams = {
       user_id: this.userId,
       email: userEmail,
@@ -197,23 +197,37 @@ export class MainComponent implements OnInit {
       busType: ticket.type || 'Звичайний',
       description: ticket.description || 'Без опису',
     };
-
-    emailjs.send('service_i9ksnkh', 'template_vfd581s', templateParams, 'XoqWj2i1jc8eAysk3')
-      .then((response) => {
+  
+    // Теперь запрос будет идти через прокси
+    fetch('/emailjs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        service_id: 'service_i9ksnkh',
+        template_id: 'template_vfd581s',
+        template_params: templateParams,
+        user_id: 'XoqWj2i1jc8eAysk3',
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
         Swal.fire({
           icon: 'success',
           title: 'Успіх!',
           text: 'Ваше повідомлення надіслано успішно.',
         });
-      }, (error) => {
+      })
+      .catch((error) => {
         Swal.fire({
           icon: 'error',
           title: 'Помилка!',
-          text: `Щось пішло не так. Спробуйте ще раз. Деталі: ${error.text}`,
+          text: `Щось пішло не так. Спробуйте ще раз. Деталі: ${error.message}`,
         });
       });
   }
-
+  
   sendEmailWithCart(): void {
     const email = this.emailInput.nativeElement.value.trim();
   

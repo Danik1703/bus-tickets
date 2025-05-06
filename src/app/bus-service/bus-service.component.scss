@@ -180,8 +180,31 @@ header {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   padding: 20px;
+  position: relative;
+  margin-bottom: 20px; 
 }
 
+.tracking-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.track-button {
+  background-color: #808080;
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:active {
+    background-color: #555555;
+    transform: scale(0.95);
+  }
+}
 
 
 .destination-container {

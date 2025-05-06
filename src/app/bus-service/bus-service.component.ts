@@ -28,6 +28,8 @@ export class BusServiceComponent implements OnInit {
   isSuggestionsVisible: boolean = false;  
   reviews: Review[] = [];
 
+  trackedRoutes: { route: string; routeTime: string }[] = [];
+
 
   private reviewTexts: string[] = [
     'Знайшов квиток за хвилину — і вже в дорозі!',
@@ -84,13 +86,14 @@ export class BusServiceComponent implements OnInit {
   ];
   
   popularDestinations = [
-    { route: 'Київ', price: 700,  image: this.getAsset('/photo/kiev.jpg'), description: 'Пориньте в історію й культуру столиці України!' },
-    { route: 'Лондон', price: 450,  image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!' },
-    { route: 'Париж', price: 500,  image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!' },
-    { route: 'Мадрид', price: 600,  image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!' },
-    { route: 'Варшава', price: 200,  image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.' },
-    { route: 'Барселона', price: 150,  image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.' }
+    { route: 'Київ', price: 700, image: this.getAsset('/photo/kiev.jpg'), description: 'Пориньте в історію й культуру столиці України!', departureTime: '2025-05-07T10:00:00' },
+    { route: 'Лондон', price: 450, image: this.getAsset('/photo/london.jpg'), description: 'Насолоджуйтесь подорожжю до столиці Великобританії!', departureTime: '2025-05-08T15:00:00' },
+    { route: 'Париж', price: 500, image: this.getAsset('/photo/italy.jpg'), description: 'Відкрийте для себе романтику французької столиці!', departureTime: '2025-05-09T12:00:00' },
+    { route: 'Мадрид', price: 600, image: this.getAsset('/photo/madrid.jpg'), description: 'Іспанська пристрасть і культура на кожному кроці!', departureTime: '2025-05-10T18:00:00' },
+    { route: 'Варшава', price: 200, image: this.getAsset('/photo/warsawa.jpg'), description: 'Чудова польська столиця з багатою історією.', departureTime: '2025-05-11T09:00:00' },
+    { route: 'Барселона', price: 150, image: this.getAsset('/photo/barselona.jpg'), description: 'Іспанська культура й архітектура в одному з найкрасивіших міст Європи.', departureTime: '2025-05-12T14:00:00' }
   ];
+  
   
   holidayDiscounts = [
     { date: '12-25', discount: 0.2 },   
@@ -128,25 +131,27 @@ export class BusServiceComponent implements OnInit {
     if (!localStorage.getItem('userId')) {
       localStorage.setItem('userId', 'AdminUserId');
     }
-
+  
+    this.trackedRoutes = JSON.parse(localStorage.getItem('trackedRoutes') || '[]');
+  
+    setInterval(() => this.checkTrackedRoutes(), 60000);
+  
     this.reviews = Array.from({ length: 6 }, () => this.generateRandomReview());
     this.startReviewUpdateInterval();
-
+  
     this.successMessageService.message$.subscribe((message) => {
       this.successMessage = message;
       setTimeout(() => {
         this.successMessage = '';
       }, 5000);
     });
-
+  
     setTimeout(() => {
-      console.log('Инициализация карты...');
+     
       this.initializeMap();
     }, 0);
   }
 
-  
-  
   ngOnDestroy(): void {
     if (this.reviewUpdateInterval) {
       clearInterval(this.reviewUpdateInterval);
@@ -328,6 +333,55 @@ export class BusServiceComponent implements OnInit {
       });
     }
   }
+
+
+  trackRoute(route: string, routeTime: string): void {
+    const alreadyTracked = this.trackedRoutes.find(r => r.route === route && r.routeTime === routeTime);
+    if (alreadyTracked) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Вже відстежується',
+        text: `Рейс ${route} вже додано до відстеження.`,
+      });
+      return;
+    }
+  
+    this.trackedRoutes.push({ route, routeTime });
+    Swal.fire({
+      icon: 'success',
+      title: 'Рейс додано',
+      text: `Ви будете отримувати сповіщення про рейс ${route}.`,
+    });
+  
+    localStorage.setItem('trackedRoutes', JSON.stringify(this.trackedRoutes));
+  }
+
+
+  checkTrackedRoutes(): void {
+    const now = new Date();
+  
+    this.trackedRoutes.forEach(tracked => {
+      const departureTime = new Date(tracked.routeTime);
+      const diff = departureTime.getTime() - now.getTime();
+  
+      if (diff > 24 * 60 * 60 * 1000 && diff <= 48 * 60 * 60 * 1000) {
+        Swal.fire({
+          icon: 'info',
+          title: 'Нагадування',
+          text: `Рейс "${tracked.route}" відправляється через 24–48 годин.`,
+        });
+      }
+  
+      if (diff > 0 && diff <= 10 * 60 * 1000) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Пора йти!',
+          text: `Рейс "${tracked.route}" відправляється через 10 хвилин.`,
+        });
+      }
+    });
+  }
+  
 
 
   getAverageRating(): number {

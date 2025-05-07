@@ -5,11 +5,26 @@ import { BusServiceComponent } from './bus-service/bus-service.component';
 import { PlatformHelper } from  '@natec/mef-dev-platform-connector';
 
 
-const routes: Routes = [
-  { path: '', component: MainComponent },  
-  { path: 'bus-service', component: BusServiceComponent },  
-  { path: '**', redirectTo: '' }, 
-];
+const routes: Routes = PlatformHelper.updatePluginsRoutes([
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        component: MainComponent
+      },
+      {
+        path: 'bus-service',
+        component: BusServiceComponent
+      },
+      {
+        path: '**',
+        redirectTo: ''
+      }
+    ]
+  }
+]);
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -321,7 +321,6 @@ export class BusServiceComponent implements OnInit {
     }
   }
 
-
   trackRoute(route: string, routeTime: string): void {
     const alreadyTracked = this.trackedRoutes.find(r => r.route === route && r.routeTime === routeTime);
     if (alreadyTracked) {
@@ -342,7 +341,6 @@ export class BusServiceComponent implements OnInit {
   
     localStorage.setItem('trackedRoutes', JSON.stringify(this.trackedRoutes));
   }
-
 
   checkTrackedRoutes(): void {
     const now = new Date();
@@ -369,8 +367,6 @@ export class BusServiceComponent implements OnInit {
     });
   }
   
-
-
   getAverageRating(): number {
     if (this.reviews.length === 0) return 0;
     const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
@@ -408,7 +404,6 @@ export class BusServiceComponent implements OnInit {
       ))
     );
   }
-
 
   onSearchQueryChange(query: string): void {
     this.searchQuery = query;
@@ -496,7 +491,6 @@ export class BusServiceComponent implements OnInit {
     return this.getHolidayDiscount() > 0;
   }
   
-
   updateDiscountMessage(): void {
     if (this.selectedRoute) {
       const selectedDateTime = new Date(`${this.filters.date}T${this.filters.time}:00`);
@@ -616,7 +610,6 @@ export class BusServiceComponent implements OnInit {
       }
     }
   }
-  
 
   resetFilters(): void {
     this.filters = {
@@ -639,7 +632,6 @@ export class BusServiceComponent implements OnInit {
     });
   }
   
-
   initializeMap(): void {
     if (this.map) {
       return;

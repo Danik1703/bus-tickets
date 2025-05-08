@@ -254,7 +254,7 @@ export class BusServiceComponent implements OnInit {
     localStorage.setItem('users', JSON.stringify(users));
   }
 
-  sendEmail(userEmail: string, ticket: any): void {
+  sendEmail(userEmail: string, ticket: any): void { 
     if (!userEmail || userEmail.trim() === '') {
       Swal.fire({
         icon: 'error',
@@ -272,15 +272,20 @@ export class BusServiceComponent implements OnInit {
       });
       return;
     }
+
+    const destination = this.destinations.find(dest => dest.name === ticket.route);
+    
+    const date = destination ? 'Не вказано' : 'Не вказано'; 
+    const description = destination ? destination.description : 'Без опису';
   
     const templateParams = {
       user_id: this.userId,
       email: userEmail,
       route: ticket.route,
       price: ticket.price,
-      date: ticket.date || 'Не вказано',
+      date: date,
       busType: ticket.type || 'Звичайний',
-      description: ticket.description || 'Без опису',
+      description: description,
     };
   
     emailjs.send('service_i9ksnkh', 'template_vfd581s', templateParams, 'XoqWj2i1jc8eAysk3')
@@ -298,8 +303,7 @@ export class BusServiceComponent implements OnInit {
         });
       });
   }
-  
-  
+
   sendUserFeedback(): void {
     const userEmail = 'userExample@gmail.com';
     const userMessage = 'Вітаємо! Ви отримали знижку на ваш квиток. Слідкуйте за змінами на нашому сайті!';

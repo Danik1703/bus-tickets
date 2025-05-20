@@ -5,7 +5,7 @@ import { BusServiceComponent } from './bus-service/bus-service.component';
 import { PlatformHelper } from  '@natec/mef-dev-platform-connector';
 
 
-const routes: Routes = PlatformHelper.updatePluginsRoutes([
+const routes: Routes = [
   {
     path: '',
     children: [
@@ -23,7 +23,7 @@ const routes: Routes = PlatformHelper.updatePluginsRoutes([
       }
     ]
   }
-]);
+];
 
 
 @NgModule({
